@@ -226,7 +226,7 @@ namespace RegistroMed
             else if (PermisosNo.IsChecked == true)
             {
                 empleado.Permiso = "No";
-                empleado.Token = "";
+                empleado.Token = null;
             }
             else
             {

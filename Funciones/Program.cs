@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
+using static Entidades.Program;
 
 namespace Funciones
 {
@@ -48,7 +50,7 @@ namespace Funciones
                         cmdEmpleado.Parameters.AddWithValue("@FechaNacimiento", Empleado.FechaNacimiento);
                         cmdEmpleado.Parameters.AddWithValue("@FechaIngreso", Empleado.FechaIngreso);
                         cmdEmpleado.Parameters.AddWithValue("@Permiso", Empleado.Permiso);
-                        cmdEmpleado.Parameters.AddWithValue("@Token", Empleado.Token);
+                        cmdEmpleado.Parameters.AddWithValue("@Token", Empleado.Token ?? (object)DBNull.Value);
                         cmdEmpleado.Parameters.AddWithValue("@Telefono", Empleado.Telefono);
                         cmdEmpleado.Parameters.AddWithValue("@Domicilio", Empleado.Domicilio);
                         cmdEmpleado.Parameters.AddWithValue("@Localidad", Empleado.Localidad);
@@ -107,7 +109,7 @@ namespace Funciones
                         cmdEmpleado.Parameters.AddWithValue("@FechaNacimiento", Empleado.FechaNacimiento);
                         cmdEmpleado.Parameters.AddWithValue("@FechaIngreso", Empleado.FechaIngreso);
                         cmdEmpleado.Parameters.AddWithValue("@Permiso", Empleado.Permiso);
-                        cmdEmpleado.Parameters.AddWithValue("@Token", Empleado.Token);
+                        cmdEmpleado.Parameters.AddWithValue("@Token", Empleado.Token ?? (object)DBNull.Value);
                         cmdEmpleado.Parameters.AddWithValue("@Telefono", Empleado.Telefono);
                         cmdEmpleado.Parameters.AddWithValue("@Domicilio", Empleado.Domicilio);
                         cmdEmpleado.Parameters.AddWithValue("@Localidad", Empleado.Localidad);
@@ -258,12 +260,12 @@ namespace Funciones
 
             using (SqlConnection conexion = conexionBBDD())
             {
-                string query = "SELECT COUNT(1) FROM Empleados WHERE Email = @Email AND Pass COLLATE SQL_Latin1_General_CP1_CS_AS = @Password";//Hacemos una query donde se seleccione solo email y contrasena
+                string query = "SELECT COUNT(1) FROM Empleados WHERE Email = @Email AND Password COLLATE SQL_Latin1_General_CP1_CS_AS = @Password";//Hacemos una query donde se seleccione solo email y contrasena
 
                 SqlCommand command = new SqlCommand(query, conexion);
 
                 command.Parameters.AddWithValue("@Email", usuario.Email);
-                command.Parameters.AddWithValue("@Pass", usuario.Password);
+                command.Parameters.AddWithValue("@Password", usuario.Password);
 
                 try
                 {
@@ -300,6 +302,90 @@ namespace Funciones
 
                 return retorno;
             }
+        }
+        public static Empleados ObtenerDatosEmpleadoPorEmail(string email)
+        {
+            Empleados empleado = null;
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = "SELECT * FROM Empleados WHERE Email = @Email";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    empleado = new Empleados
+                    {
+                        Id = reader.GetInt32(0),
+                        Nombre=reader.GetString(1),
+                        Apellido=reader.GetString(2),
+                        Password=reader.GetString(3),
+                        Email=reader.GetString(4),
+                        Nacionalidad=reader.GetString(5),
+                        FechaNacimiento=reader.GetDateTime(6),
+                        FechaIngreso=reader.GetDateTime(7),
+                        Permiso=reader.GetString(8),
+                        Token = reader.IsDBNull(9) ? null : reader.GetString(9),
+                        Telefono=reader.GetString(10),
+                        Domicilio=reader.GetString(11),
+                        Localidad=reader.GetString(12),
+                        Documento=reader.GetInt32(13)
+                    };
+                }
+            }
+
+            return empleado;
+        }
+        public static List<Empleados> ObtenerTodosLosEmpleados()
+        {
+            List<Empleados> empleados = new List<Empleados>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = "SELECT * FROM Empleados";
+
+                SqlCommand command = new SqlCommand(query, conexion);
+
+                try
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Empleados empleado = new Empleados
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Password = reader.GetString(3),
+                            Email = reader.GetString(4),
+                            Nacionalidad = reader.GetString(5),
+                            FechaNacimiento = reader.GetDateTime(6),
+                            FechaIngreso = reader.GetDateTime(7),
+                            Permiso = reader.GetString(8),
+                            Token = reader.IsDBNull(9) ? null : reader.GetString(9),
+                            Telefono = reader.GetString(10),
+                            Domicilio = reader.GetString(11),
+                            Localidad = reader.GetString(12),
+                            Documento = reader.GetInt32(13)
+                        };
+
+                        empleados.Add(empleado);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+
+            return empleados;
         }
     }
 }

@@ -42,6 +42,9 @@ namespace InicioSesion
             if (Funciones.Program.VerificacionLogin(empleado)>0)
             {
                 //Crear el objeto de la pantalla de administracion y cerrar la catual y mostar la nueva
+                Administracion.MainWindow administracion = new Administracion.MainWindow(CorreG.Text);
+                this.Close();
+                administracion.Show();
             }
             else
             {
