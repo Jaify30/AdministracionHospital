@@ -61,12 +61,6 @@ namespace Administracion
             List<Entidades.Program.Empleados> empleado = Funciones.Program.ObtenerTodosLosEmpleados();
             Data_Empleados.ItemsSource = empleado;
         }
-
-        private void Mostrar_Pacientes_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void MostrarContraseña_Click(object sender, RoutedEventArgs e)
         {
             Entidades.Program.Empleados empleado = Funciones.Program.ObtenerDatosEmpleadoPorEmail(emailG);
@@ -76,6 +70,11 @@ namespace Administracion
             // Mostrar la token
 
             MessageBox.Show($"Su token es {token}", "token");
+        }//Muestra el token del usuario si es que lo tiene.
+
+        private void Mostrar_Pacientes_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Modificar_Click(object sender, RoutedEventArgs e)
