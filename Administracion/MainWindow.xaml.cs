@@ -33,6 +33,8 @@ namespace Administracion
             {
                 token.Visibility = Visibility.Hidden;
                 Mostrar_Empleados.Visibility = Visibility.Hidden;
+                Mostrar_auxiliares.Visibility = Visibility.Hidden;
+                Mostrar_Doctores.Visibility = Visibility.Hidden;
             }
             if (empleados.Token != null)
             {
@@ -57,9 +59,21 @@ namespace Administracion
         }
         private void Mostrar_Empleados_Click(object sender, RoutedEventArgs e)
         {
+            Data_Pacientes.Visibility = Visibility.Hidden;
+            Data_Doctores.Visibility = Visibility.Hidden;
+            Data_Auxiliares.Visibility = Visibility.Hidden;
             Data_Empleados.HeadersVisibility = DataGridHeadersVisibility.All;
-            List<Entidades.Program.Empleados> empleado = Funciones.Program.ObtenerTodosLosEmpleados();
-            Data_Empleados.ItemsSource = empleado;
+
+            List<Entidades.Program.Empleados> empleados = Funciones.Program.ObtenerTodosLosEmpleados();
+
+            if (empleados == null || !empleados.Any())
+            {
+                MessageBox.Show("No se han encontrado empleados.");
+                return;
+            }
+
+            Data_Empleados.ItemsSource = empleados;
+            Data_Empleados.Visibility = Visibility.Visible;
         }
         private void MostrarContraseña_Click(object sender, RoutedEventArgs e)
         {
@@ -71,10 +85,54 @@ namespace Administracion
 
             MessageBox.Show($"Su token es {token}", "token");
         }//Muestra el token del usuario si es que lo tiene.
+        private void Mostrar_Doctores_Click(object sender, RoutedEventArgs e)
+        {
+            Data_Empleados.Visibility = Visibility.Hidden;
+            Data_Auxiliares.Visibility = Visibility.Hidden;
+            Data_Pacientes.Visibility = Visibility.Hidden;
+            Data_Doctores.HeadersVisibility = DataGridHeadersVisibility.All;
+
+            List<Doctores> doctores = Funciones.Program.ObtenerDoctores();
+
+            if (doctores == null || !doctores.Any())
+            {
+                MessageBox.Show("No se han encontrado empleados.");
+                return;
+            }
+
+            Data_Doctores.ItemsSource = doctores;
+            Data_Doctores.Visibility = Visibility.Visible;
+        }
+        private void Mostrar_auxiliares_Click_1(object sender, RoutedEventArgs e)
+        {
+            // Ocultar otros DataGrids
+            Data_Empleados.Visibility = Visibility.Hidden;
+            Data_Doctores.Visibility = Visibility.Hidden;
+            Data_Pacientes.Visibility = Visibility.Hidden;
+
+            // Configurar el DataGrid de auxiliares
+            Data_Auxiliares.HeadersVisibility = DataGridHeadersVisibility.All;
+
+            // Obtener la lista de auxiliares
+            List<EmpleadosAux> auxiliar = Funciones.Program.ObtenerAuxiliares();
+
+            // Verificar si la lista contiene datos
+            if (auxiliar == null || !auxiliar.Any())
+            {
+                MessageBox.Show("No se han encontrado empleados auxiliares.");
+                return;
+            }
+
+            // Asignar la lista al DataGrid
+            Data_Auxiliares.ItemsSource = auxiliar;
+
+            // Hacer visible el DataGrid
+            Data_Auxiliares.Visibility = Visibility.Visible;
+        }
 
         private void Mostrar_Pacientes_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void Modificar_Click(object sender, RoutedEventArgs e)

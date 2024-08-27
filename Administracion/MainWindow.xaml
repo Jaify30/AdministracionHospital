@@ -150,6 +150,52 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
+                        
+                        <Button  Margin="0,50,0,0" Name="Mostrar_Doctores" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Mostrar_Doctores_Click">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Border 
+                                        x:Name="border"
+                                        Background="White"
+                                        CornerRadius="5">   
+
+                                        <ContentPresenter 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Content="Mostrar Doctores"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="#212529"/>
+                                            <Setter Property="Foreground" Value="Beige"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <Button  Margin="0,50,0,0" Name="Mostrar_auxiliares" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Mostrar_auxiliares_Click_1">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Border 
+                                    x:Name="border"
+                                    Background="White"
+                                    CornerRadius="5">   
+
+                                        <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Content="Mostrar auxiliares"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="#212529"/>
+                                            <Setter Property="Foreground" Value="Beige"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
 
                         <Button  Margin="0,50,0,0" Name="Mostrar_Pacientes" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Mostrar_Pacientes_Click">
                             <Button.Template>
@@ -194,11 +240,11 @@
                             <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
                             <DataGridTextColumn Header="Apellido" Binding="{Binding Apellido}" />
                             <DataGridTextColumn Header="Fecha de Ingreso" Binding="{Binding FechaIngreso, StringFormat=d}" />
-                            <DataGridTextColumn Header="Cargo" Binding="{Binding Cargo}" />
                             <DataGridTextColumn Header="Domicilio" Binding="{Binding Domicilio}" />
                             <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" />
                             <DataGridTextColumn Header="Permisos" Binding="{Binding Permiso}" />
                             <DataGridTextColumn Header="Token" Binding="{Binding Token}" />
+                            <DataGridTextColumn Header="Fecha Nacimiento" Binding="{Binding FechaNacimiento, StringFormat=d}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -206,6 +252,50 @@
 
                         <DataGrid.Columns>
 
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Doctores" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
+                            <DataGridTextColumn Header="Apellido" Binding="{Binding Apellido}" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                            <DataGridTextColumn Header="Documento" Binding="{Binding Documento}" />
+                            <DataGridTextColumn Header="Cargo" Binding="{Binding Cargo}"/>
+                            <DataGridTextColumn Header="Matricula" Binding="{Binding Matricula}"/>
+                            <DataGridTextColumn Header="Nacionalidad" Binding="{Binding Nacionalidad}" />
+                            <DataGridTextColumn Header="Fecha de Ingreso" Binding="{Binding FechaIngreso, StringFormat=d}" />
+                            <DataGridTextColumn Header="Domicilio" Binding="{Binding Domicilio}" />
+                            <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" />
+                            <DataGridTextColumn Header="Password" Binding="{Binding Password}" />
+                            <DataGridTextColumn Header="Permisos" Binding="{Binding Permiso}" />
+                            <DataGridTextColumn Header="Token" Binding="{Binding Token}" />
+                            <DataGridTextColumn Header="Fecha Nacimiento" Binding="{Binding FechaNacimiento, StringFormat=d}"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Auxiliares" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
+                            <DataGridTextColumn Header="Apellido" Binding="{Binding Apellido}" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                            <DataGridTextColumn Header="Nacionalidad" Binding="{Binding Nacionalidad}" />
+                            <DataGridTextColumn Header="Documento" Binding="{Binding Documento}" />
+                            <DataGridTextColumn Header="Cargo" Binding="{Binding Cargo}"/>
+                            <DataGridTextColumn Header="Fecha de Ingreso" Binding="{Binding FechaIngreso, StringFormat=d}" />
+                            <DataGridTextColumn Header="Domicilio" Binding="{Binding Domicilio}" />
+                            <DataGridTextColumn Header="Localidad" Binding="{Binding Localidad}" />
+                            <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" />
+                            <DataGridTextColumn Header="Password" Binding="{Binding Password}" />
+                            <DataGridTextColumn Header="Permisos" Binding="{Binding Permiso}" />
+                            <DataGridTextColumn Header="Token" Binding="{Binding Token}" />
+                            <DataGridTextColumn Header="Fecha Nacimiento" Binding="{Binding FechaNacimiento, StringFormat=d}"/>
                         </DataGrid.Columns>
 
                     </DataGrid>

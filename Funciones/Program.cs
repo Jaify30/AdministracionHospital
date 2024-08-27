@@ -371,7 +371,7 @@ namespace Funciones
                             Telefono = reader.GetString(10),
                             Domicilio = reader.GetString(11),
                             Localidad = reader.GetString(12),
-                            Documento = reader.GetInt32(13)
+                            Documento = reader.GetInt32(13)//Hacer dos botones, uno donde se muestre al empleadoaux y otro a los doctores
                         };
 
                         empleados.Add(empleado);
@@ -386,6 +386,140 @@ namespace Funciones
             }
 
             return empleados;
+        }
+
+        public static List<Doctores> ObtenerDoctores()
+        {
+            List<Doctores> doctores = new List<Doctores>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = @"
+                        SELECT 
+                            e.Id,
+                            e.Nombre,
+                            e.Apellido,
+                            e.Email,
+                            e.Nacionalidad,
+                            e.FechaNacimiento,
+                            e.FechaIngreso,
+                            e.Permiso,
+                            e.Telefono,
+                            e.Domicilio,
+                            e.Localidad,
+                            e.Documento,
+                            e.Token,
+                            e.Password,
+                            d.Cargo,
+                            d.Matricula
+                        FROM Empleados e
+                        INNER JOIN Doctores d ON e.Id = d.IdDoctor";
+
+                SqlCommand command = new SqlCommand(query, conexion);
+
+                try
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Doctores doctor = new Doctores
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Email = reader.GetString(3),
+                            Nacionalidad = reader.GetString(4),
+                            FechaNacimiento = reader.GetDateTime(5),
+                            FechaIngreso = reader.GetDateTime(6),
+                            Permiso = reader.GetString(7),
+                            Telefono = reader.GetString(8),
+                            Domicilio = reader.GetString(9),
+                            Localidad = reader.GetString(10),
+                            Documento = reader.GetInt32(11),
+                            Token = reader.IsDBNull(12) ? null : reader.GetString(12),
+                            Password = reader.GetString(13),
+                            Cargo = reader.GetString(14),
+                            Matricula = reader.GetString(15)
+                        };
+
+                        doctores.Add(doctor);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+            return doctores;
+        }
+
+        public static List<EmpleadosAux> ObtenerAuxiliares()
+        {
+            List<EmpleadosAux> auxiliares = new List<EmpleadosAux>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = @"
+                SELECT 
+                    e.Id,
+                    e.Nombre,
+                    e.Apellido,
+                    e.Email,
+                    e.Nacionalidad,
+                    e.FechaNacimiento,
+                    e.FechaIngreso,
+                    e.Permiso,
+                    e.Telefono,
+                    e.Domicilio,
+                    e.Localidad,
+                    e.Documento,
+                    e.Token,
+                    e.Password,
+                    d.Cargo
+                FROM Empleados e
+                INNER JOIN EmpleadosAux d ON e.Id = d.IdEmpleado";
+
+                SqlCommand command = new SqlCommand(query, conexion);
+
+                try
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        EmpleadosAux auxiliar = new EmpleadosAux
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Email = reader.GetString(3),
+                            Nacionalidad = reader.GetString(4),
+                            FechaNacimiento = reader.GetDateTime(5),
+                            FechaIngreso = reader.GetDateTime(6),
+                            Permiso = reader.GetString(7),
+                            Telefono = reader.GetString(8),
+                            Domicilio = reader.GetString(9),
+                            Localidad = reader.GetString(10),
+                            Documento = reader.GetInt32(11),
+                            Token = reader.IsDBNull(12) ? null : reader.GetString(12),
+                            Password = reader.GetString(13),
+                            Cargo = reader.GetString(14)
+                        };
+
+                        auxiliares.Add(auxiliar);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+            return auxiliares;
         }
     }
 }
