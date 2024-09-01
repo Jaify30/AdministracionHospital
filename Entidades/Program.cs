@@ -99,10 +99,11 @@ namespace Entidades
             public DateTime FechaNacimiento { get;set; }
             public DateTime FechaIngreso {  get; set; }
             public int IdDoctor { get; set; }
+            public string Historial { get; set; }
 
             public Pacientes() { }
             public Pacientes(int IdPacientes, string Email, int Documento, string Nombre, string Apellido, string Telefono, string Legajo, DateTime FechaNacimiento,
-                DateTime FechaIngreso, int IdDoctor)
+                DateTime FechaIngreso, int IdDoctor, string Historial)
             {
                 this.IdPacientes = IdPacientes;
                 this.Email = Email;
@@ -114,7 +115,7 @@ namespace Entidades
                 this.FechaIngreso = FechaIngreso;
                 this.FechaNacimiento = FechaNacimiento;
                 this.IdDoctor = IdDoctor;
-
+                this.Historial = Historial;
             }
         }
 

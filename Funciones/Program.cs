@@ -26,6 +26,43 @@ namespace Funciones
 
             return conexion;
         }
+        public static int RegistrarPacientes(Pacientes pacienteNuevo)
+        {
+            int retorno = 0;
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                using (SqlTransaction transaction = conexion.BeginTransaction())
+                {
+                    try
+                    {
+                        string query = @"INSERT INTO Pacientes (Email, Documento, Nombre, Apellido, Telefono, Legajo, FechaIngreso, FechaNacimiento, IdDoctor, Historial)
+                        VALUES (@Email, @Documento, @Nombre, @Apellido, @Telefono, @Legajo, @FechaIngreso, @FechaNacimiento, @IdDoctor, @Historial)";
+
+                        SqlCommand cmd = new SqlCommand(query, conexion,transaction);
+                        cmd.Parameters.AddWithValue("@Email", pacienteNuevo.Email);
+                        cmd.Parameters.AddWithValue("@Documento", pacienteNuevo.Documento);
+                        cmd.Parameters.AddWithValue("@Nombre", pacienteNuevo.Nombre);
+                        cmd.Parameters.AddWithValue("@Apellido", pacienteNuevo.Apellido);
+                        cmd.Parameters.AddWithValue("@Telefono", pacienteNuevo.Telefono);
+                        cmd.Parameters.AddWithValue("@Legajo", pacienteNuevo.Legajo);
+                        cmd.Parameters.AddWithValue("@FechaIngreso", pacienteNuevo.FechaIngreso); // Usa la fecha actual como ejemplo
+                        cmd.Parameters.AddWithValue("@FechaNacimiento", pacienteNuevo.FechaNacimiento); // Reemplaza con la fecha de nacimiento correcta
+                        cmd.Parameters.AddWithValue("@IdDoctor", pacienteNuevo.IdDoctor); // Usar DBNull.Value si el campo es opcional y no tiene valor
+                        cmd.Parameters.AddWithValue("@Historial", pacienteNuevo.Historial);
+                        retorno=cmd.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+            return retorno;
+        } //Agrega paciente, falta agregar que reciba en la app el id del doctor que lo atiende
         public static int RegistrarDoctores(Entidades.Program.Doctores Doctores, Entidades.Program.Empleados Empleado)
         {
             int retorno = 0;
@@ -246,7 +283,7 @@ namespace Funciones
             try
             {
                 string patron = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-                Regex regex = new Regex(patron,RegexOptions.IgnoreCase);
+                Regex regex = new Regex(patron, RegexOptions.IgnoreCase);
                 return regex.IsMatch(Email);
             }
             catch (RegexMatchTimeoutException)
@@ -321,19 +358,19 @@ namespace Funciones
                     empleado = new Empleados
                     {
                         Id = reader.GetInt32(0),
-                        Nombre=reader.GetString(1),
-                        Apellido=reader.GetString(2),
-                        Password=reader.GetString(3),
-                        Email=reader.GetString(4),
-                        Nacionalidad=reader.GetString(5),
-                        FechaNacimiento=reader.GetDateTime(6),
-                        FechaIngreso=reader.GetDateTime(7),
-                        Permiso=reader.GetString(8),
+                        Nombre = reader.GetString(1),
+                        Apellido = reader.GetString(2),
+                        Password = reader.GetString(3),
+                        Email = reader.GetString(4),
+                        Nacionalidad = reader.GetString(5),
+                        FechaNacimiento = reader.GetDateTime(6),
+                        FechaIngreso = reader.GetDateTime(7),
+                        Permiso = reader.GetString(8),
                         Token = reader.IsDBNull(9) ? null : reader.GetString(9),
-                        Telefono=reader.GetString(10),
-                        Domicilio=reader.GetString(11),
-                        Localidad=reader.GetString(12),
-                        Documento=reader.GetInt32(13)
+                        Telefono = reader.GetString(10),
+                        Domicilio = reader.GetString(11),
+                        Localidad = reader.GetString(12),
+                        Documento = reader.GetInt32(13)
                     };
                 }
             }
@@ -387,7 +424,6 @@ namespace Funciones
 
             return empleados;
         }
-
         public static List<Doctores> ObtenerDoctores()
         {
             List<Doctores> doctores = new List<Doctores>();
@@ -455,7 +491,6 @@ namespace Funciones
             }
             return doctores;
         }
-
         public static List<EmpleadosAux> ObtenerAuxiliares()
         {
             List<EmpleadosAux> auxiliares = new List<EmpleadosAux>();
@@ -520,6 +555,38 @@ namespace Funciones
                 }
             }
             return auxiliares;
+        }
+        public static string ObtenerMatriculaDoctor(string Email)
+        {
+            string matricula = null; // Inicializa la variable para almacenar la matrícula
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = @"SELECT 
+                            d.Matricula
+                         FROM Empleados e
+                         INNER JOIN Doctores d ON e.Id = d.IdDoctor
+                         WHERE e.Email = @Email";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@Email", Email);
+
+                try
+                {
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read()) // Lee solo la primera fila, ya que solo se necesita una matrícula
+                    {
+                        matricula = reader.GetString(0); // Obtiene el valor de la matrícula
+                    }
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+
+            return matricula; // Retorna la matrícula encontrada o null si no se encontró ninguna
         }
     }
 }
