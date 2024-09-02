@@ -148,14 +148,16 @@ namespace Administracion
         private void Agregar_Paciente_Click(object sender, RoutedEventArgs e)
         {
             string TieneMatricula = Funciones.Program.ObtenerMatriculaDoctor(emailG);
+            Entidades.Program.Empleados empleado = Funciones.Program.ObtenerDatosEmpleadoPorEmail(emailG);
 
             if (TieneMatricula==null)
             {
                 MessageBox.Show("No tiene permisos para agregar pacientes a su Base de datos.");
+                return ;
             }
             else
             {
-                RegistroPacientes.MainWindow AgregarPacientes = new RegistroPacientes.MainWindow();
+                RegistroPacientes.MainWindow AgregarPacientes = new RegistroPacientes.MainWindow(empleado.Id);
                 AgregarPacientes.ShowDialog();
             }
         }

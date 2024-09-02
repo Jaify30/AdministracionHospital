@@ -253,13 +253,6 @@ namespace RegistroAux
                     edad--;
                 }
 
-                // Validar si tiene más de 18 años
-                if (edad < 18)
-                {
-                    ErrorTextBlock.Text = "Debe ser mayor de 18 años.";
-                    ErrorTextBlock.Visibility = Visibility.Visible;
-                    FechaNacimiento.SelectedDate = null; // Opcional: Limpia la selección
-                }
                 if (selectedDate > currentDate || selectedDate < minimumDate)
                 {
                     ErrorTextBlock.Text = "La fecha seleccionada no es válida.";

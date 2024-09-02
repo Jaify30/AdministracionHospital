@@ -30,7 +30,7 @@
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" FontFamily="Tahoma" FontSize="20" HorizontalAlignment="Center" Foreground="Beige" VerticalAlignment="Center" Margin="10,0,0,0">Registro de Medicos</TextBlock>
+                <TextBlock Grid.Column="0" FontFamily="Tahoma" FontSize="20" HorizontalAlignment="Center" Foreground="Beige" VerticalAlignment="Center" Margin="10,0,0,0">Ingreso de Pacientes</TextBlock>
                 <Button Grid.Column="0" FontSize="30" HorizontalAlignment="Right" Content="-" Width="30" Click="Minimize_Click" Background="Transparent" Foreground="Aqua" BorderBrush="Transparent">
                     <Button.Template>
                         <ControlTemplate>
@@ -167,7 +167,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="20" Height="40" Width="150" HorizontalAlignment="Right" Margin="0,0,10,0" Click="Volver_Click">
+                <Button Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="20" Height="40" Width="150" HorizontalAlignment="Right" Margin="0,0,10,0" Click="Button_Click">
                     <Button.Template>
                         <ControlTemplate>
                             <Border 
@@ -190,7 +190,7 @@
                     </Button.Template>
                 </Button>
 
-                <Button Grid.Column="1" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="20" Height="40" Width="150" Margin="10,0,0,0" HorizontalAlignment="Left" Click="Button_Click">
+                <Button Grid.Column="1" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="20" Height="40" Width="150" Margin="10,0,0,0" HorizontalAlignment="Left" Click="Button_Click_1">
                     <Button.Template>
                         <ControlTemplate>
                             <Border 

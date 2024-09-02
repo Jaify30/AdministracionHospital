@@ -62,7 +62,7 @@ namespace Funciones
                 }
             }
             return retorno;
-        } //Agrega paciente, falta agregar que reciba en la app el id del doctor que lo atiende
+        } //Agrega paciente
         public static int RegistrarDoctores(Entidades.Program.Doctores Doctores, Entidades.Program.Empleados Empleado)
         {
             int retorno = 0;
