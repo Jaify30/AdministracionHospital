@@ -251,7 +251,16 @@
                     <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Pacientes" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False">
 
                         <DataGrid.Columns>
-
+                            <DataGridTextColumn Header="Id" Binding="{Binding IdPacientes}"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                            <DataGridTextColumn Header="Documento" Binding="{Binding Documento}"/>
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}"/>
+                            <DataGridTextColumn Header="Apellido" Binding="{Binding Apellido}"/>
+                            <DataGridTextColumn Header="Telefono" Binding="{Binding Telefono}"/>
+                            <DataGridTextColumn Header="Legajo" Binding="{Binding Legajo}"/>
+                            <DataGridTextColumn Header="Fecha de ingreso" Binding="{Binding FechaIngreso, StringFormat=d}"/>
+                            <DataGridTextColumn Header="Fecha de Nacimiento" Binding="{Binding FechaNacimiento, StringFormat=d}"/>
+                            <DataGridTextColumn Header="Historial" Binding="{Binding Historial}"/>
                         </DataGrid.Columns>
 
                     </DataGrid>

@@ -588,5 +588,42 @@ namespace Funciones
 
             return matricula; // Retorna la matrícula encontrada o null si no se encontró ninguna
         }
+
+        public static List<Pacientes> MostrarPacientes(int idDoctor)
+        {
+            List<Pacientes> pacientes = new List<Pacientes>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = @"SELECT * FROM Pacientes WHERE IdDoctor = @IdDoctor";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                
+                cmd.Parameters.AddWithValue("@IdDoctor", idDoctor);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Pacientes paciente = new Pacientes
+                        {
+                            IdPacientes = Convert.ToInt32(reader["IdPacientes"]),
+                            Email = reader["Email"].ToString(),
+                            Documento = Convert.ToInt32(reader["Documento"]),
+                            Nombre = reader["Nombre"].ToString(),
+                            Apellido = reader["Apellido"].ToString(),
+                            Telefono = reader["Telefono"].ToString(),
+                            Legajo = reader["Legajo"].ToString(),
+                            FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]),
+                            FechaNacimiento = Convert.ToDateTime(reader["FechaNacimiento"]),
+                            IdDoctor = Convert.ToInt32(reader["IdDoctor"]),
+                            Historial = reader["Historial"].ToString()
+                        };
+                        pacientes.Add(paciente);
+                    }
+                }
+            }
+            return pacientes;
+        }
     }
 }

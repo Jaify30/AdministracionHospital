@@ -132,7 +132,24 @@ namespace Administracion
 
         private void Mostrar_Pacientes_Click(object sender, RoutedEventArgs e)
         {
-            
+            Empleados empleados = Funciones.Program.ObtenerDatosEmpleadoPorEmail(emailG);
+            Data_Empleados.Visibility = Visibility.Hidden;
+            Data_Doctores.Visibility = Visibility.Hidden;
+            Data_Auxiliares.Visibility = Visibility.Hidden;
+
+            Data_Pacientes.HeadersVisibility = DataGridHeadersVisibility.All;
+
+            List<Pacientes> pacientes = Funciones.Program.MostrarPacientes(empleados.Id);
+
+            if (pacientes == null || !pacientes.Any())
+            {
+                MessageBox.Show("No se han encontrado empleados auxiliares.");
+                return;
+            }
+
+            Data_Pacientes.ItemsSource = pacientes;
+
+            Data_Pacientes.Visibility= Visibility.Visible;
         }
 
         private void Modificar_Click(object sender, RoutedEventArgs e)
