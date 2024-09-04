@@ -35,6 +35,10 @@ namespace Administracion
                 Mostrar_Empleados.Visibility = Visibility.Hidden;
                 Mostrar_auxiliares.Visibility = Visibility.Hidden;
                 Mostrar_Doctores.Visibility = Visibility.Hidden;
+                Buscar_Doctor.Visibility = Visibility.Hidden;
+                TextDoctor.Visibility = Visibility.Hidden;
+                DocumentoDoctor.Visibility = Visibility.Hidden;
+                DocumentoDoctorBorder.Visibility = Visibility.Hidden;
             }
             if (empleados.Token != null)
             {
@@ -143,7 +147,7 @@ namespace Administracion
 
             if (pacientes == null || !pacientes.Any())
             {
-                MessageBox.Show("No se han encontrado empleados auxiliares.");
+                MessageBox.Show("No se han encontrado Pacientes.");
                 return;
             }
 
@@ -159,7 +163,7 @@ namespace Administracion
 
         private void Eliminar_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void Agregar_Paciente_Click(object sender, RoutedEventArgs e)
@@ -177,6 +181,71 @@ namespace Administracion
                 RegistroPacientes.MainWindow AgregarPacientes = new RegistroPacientes.MainWindow(empleado.Id);
                 AgregarPacientes.ShowDialog();
             }
+        }
+
+        private void Buscar_Paciente_Click(object sender, RoutedEventArgs e)
+        {
+            Empleados empleados = Funciones.Program.ObtenerDatosEmpleadoPorEmail(emailG);
+            Data_Empleados.Visibility = Visibility.Hidden;
+            Data_Doctores.Visibility = Visibility.Hidden;
+            Data_Auxiliares.Visibility = Visibility.Hidden;
+
+            int numero;
+            int documentoPaciente;
+
+            Data_Pacientes.HeadersVisibility = DataGridHeadersVisibility.All;
+            if (!Funciones.Program.ValidarSoloNumeros(DocumentoPaciente.Text, out numero, "Documento"))
+            {
+                MessageBox.Show("El documento ingresado no es válido.", "Documento Inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            else
+            {
+                documentoPaciente = numero;
+            }
+
+            List<Pacientes> pacientes = Funciones.Program.BuscarPaciente(documentoPaciente,empleados.Id);
+
+            if (pacientes == null || !pacientes.Any())
+            {
+                MessageBox.Show("No se han encontrado el paciente con ese documento.");
+                return;
+            }
+
+            Data_Pacientes.ItemsSource = pacientes;
+
+            Data_Pacientes.Visibility = Visibility.Visible;
+        }
+
+        private void Buscar_Doctor_Click(object sender, RoutedEventArgs e)
+        {
+            Data_Empleados.Visibility = Visibility.Hidden;
+            Data_Auxiliares.Visibility = Visibility.Hidden;
+            Data_Pacientes.Visibility = Visibility.Hidden;
+            Data_Doctores.HeadersVisibility = DataGridHeadersVisibility.All;
+            int numero;
+            int documentoDoctor;
+
+            if (!Funciones.Program.ValidarSoloNumeros(DocumentoDoctor.Text, out numero, "Documento"))
+            {
+                MessageBox.Show("El documento ingresado no es válido.", "Documento Inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            else
+            {
+                documentoDoctor = numero;
+            }
+
+            List<Doctores> doctores = Funciones.Program.BuscarDoctores(documentoDoctor);
+
+            if (doctores == null || !doctores.Any())
+            {
+                MessageBox.Show("No se ha encontrado un doctor con ese documento.");
+                return;
+            }
+
+            Data_Doctores.ItemsSource = doctores;
+            Data_Doctores.Visibility = Visibility.Visible;
         }
     }
 }

@@ -127,7 +127,73 @@
                         </Button.Template>
                     </Button>
 
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,150,0,0">
+                    
+                    <StackPanel>
+                        <Label Margin="0,20,0,0" HorizontalAlignment="Center" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Documento del Paciente</Label>
+                        <DockPanel>
+                            <Border Margin="20,0,0,0" BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="200">
+                                <TextBox Name="DocumentoPaciente" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+                                Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                            </Border>
+                            <Button Name="Buscar_Paciente" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="50" HorizontalAlignment="Center" Click="Buscar_Paciente_Click">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Border 
+                                        x:Name="border"
+                                        Background="White"
+                                        CornerRadius="300">       
+
+                                            <ContentPresenter 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Content="🔍"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#212529"/>
+                                                <Setter Property="Foreground" Value="Beige"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DockPanel>
+                        
+                        <Label Margin="0,20,0,0" Name="TextDoctor" HorizontalAlignment="Center" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Documento del Doctor</Label>
+                        <DockPanel>
+                            <Border Name="DocumentoDoctorBorder" Margin="20,0,0,0" BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="200">
+                                <TextBox Name="DocumentoDoctor" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+        Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                            </Border>
+                            <Button Name="Buscar_Doctor" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="50" HorizontalAlignment="Center" Click="Buscar_Doctor_Click">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Border 
+                                            x:Name="border"
+                                            Background="White"
+                                            CornerRadius="300">
+
+                                            <ContentPresenter 
+                                            HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"
+                                            Content="🔍"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#212529"/>
+                                                <Setter Property="Foreground" Value="Beige"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DockPanel>
+                    </StackPanel>
+                    
+                    
+                    
+
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
                         <Button Margin="0,50,0,0" Name="Mostrar_Empleados" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Mostrar_Empleados_Click">
                             <Button.Template>
                                 <ControlTemplate>
@@ -230,7 +296,7 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Empleados" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" AutoGenerateColumns="False">
+                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Empleados" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" AutoGenerateColumns="False" SelectedItem="{Binding EmpleadoSeleccionado}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
                             <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
@@ -248,7 +314,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Pacientes" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False">
+                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Pacientes" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False" SelectedItem="{Binding PacienteSeleccionado}">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding IdPacientes}"/>
@@ -265,7 +331,7 @@
 
                     </DataGrid>
 
-                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Doctores" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False">
+                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Doctores" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False" SelectedItem="{Binding DoctorSeleccionado}">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
@@ -287,7 +353,7 @@
 
                     </DataGrid>
 
-                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Auxiliares" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False">
+                    <DataGrid CanUserAddRows="False" HeadersVisibility="None" CanUserDeleteRows="False"  IsReadOnly="True" Name="Data_Auxiliares" Visibility="Hidden" Background="#212529" BorderBrush="Transparent" BorderThickness="0" Foreground="Beige" AutoGenerateColumns="False" SelectedItem="{Binding AuxiliarSeleccionado}">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" />

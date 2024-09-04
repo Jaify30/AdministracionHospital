@@ -588,7 +588,6 @@ namespace Funciones
 
             return matricula; // Retorna la matrícula encontrada o null si no se encontró ninguna
         }
-
         public static List<Pacientes> MostrarPacientes(int idDoctor)
         {
             List<Pacientes> pacientes = new List<Pacientes>();
@@ -624,6 +623,114 @@ namespace Funciones
                 }
             }
             return pacientes;
+        }
+        //Terminar los botones de modificar y eliminar.
+        public static List<Pacientes> BuscarPaciente(int Documento, int idDoctor)
+        {
+            List<Pacientes> pacienteBuscado = new List<Pacientes>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = @"SELECT * FROM Pacientes WHERE Documento=@documento AND IdDoctor=@idDoctor ";
+                
+                SqlCommand cmd = new SqlCommand(query, conexion);
+
+                cmd.Parameters.AddWithValue("@documento",Documento);
+                cmd.Parameters.AddWithValue("@idDoctor",idDoctor);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Pacientes paciente = new Pacientes
+                        {
+                            IdPacientes = Convert.ToInt32(reader["IdPacientes"]),
+                            Email = reader["Email"].ToString(),
+                            Documento = Convert.ToInt32(reader["Documento"]),
+                            Nombre = reader["Nombre"].ToString(),
+                            Apellido = reader["Apellido"].ToString(),
+                            Telefono = reader["Telefono"].ToString(),
+                            Legajo = reader["Legajo"].ToString(),
+                            FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]),
+                            FechaNacimiento = Convert.ToDateTime(reader["FechaNacimiento"]),
+                            IdDoctor = Convert.ToInt32(reader["IdDoctor"]),
+                            Historial = reader["Historial"].ToString()
+                        };
+                        pacienteBuscado.Add(paciente);
+                    }
+                }
+            }
+            return pacienteBuscado;
+        }
+        public static List<Doctores> BuscarDoctores(int Documento)
+        {
+            List<Doctores> doctorBuscado = new List<Doctores>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = @"
+                        SELECT 
+                        e.Id,
+                        e.Nombre,
+                        e.Apellido,
+                        e.Email,
+                        e.Nacionalidad,
+                        e.FechaNacimiento,
+                        e.FechaIngreso,
+                        e.Permiso,
+                        e.Telefono,
+                        e.Domicilio,
+                        e.Localidad,
+                        e.Documento,
+                        e.Token,
+                        e.Password,
+                        d.Cargo,
+                        d.Matricula
+                    FROM Empleados e
+                    INNER JOIN Doctores d ON e.Id = d.IdDoctor
+                    WHERE e.Documento = @Documento;";
+
+                SqlCommand command = new SqlCommand(query, conexion);
+
+                command.Parameters.AddWithValue("@Documento",Documento);
+
+                try
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Doctores doctor = new Doctores
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Email = reader.GetString(3),
+                            Nacionalidad = reader.GetString(4),
+                            FechaNacimiento = reader.GetDateTime(5),
+                            FechaIngreso = reader.GetDateTime(6),
+                            Permiso = reader.GetString(7),
+                            Telefono = reader.GetString(8),
+                            Domicilio = reader.GetString(9),
+                            Localidad = reader.GetString(10),
+                            Documento = reader.GetInt32(11),
+                            Token = reader.IsDBNull(12) ? null : reader.GetString(12),
+                            Password = reader.GetString(13),
+                            Cargo = reader.GetString(14),
+                            Matricula = reader.GetString(15)
+                        };
+
+                        doctorBuscado.Add(doctor);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+            return doctorBuscado;
         }
     }
 }
