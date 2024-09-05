@@ -328,6 +328,7 @@
                             <DataGridTextColumn Header="Fecha de Nacimiento" Binding="{Binding FechaNacimiento, StringFormat=d}"/>
                             <DataGridTextColumn Header="Historial" Binding="{Binding Historial}"/>
                         </DataGrid.Columns>
+                        
 
                     </DataGrid>
 

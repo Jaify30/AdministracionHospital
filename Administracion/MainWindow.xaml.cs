@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Input;
+using System.ComponentModel;
 using static Entidades.Program;
+using GalaSoft.MvvmLight.Command;
 
 namespace Administracion
 {
@@ -78,6 +82,9 @@ namespace Administracion
 
             Data_Empleados.ItemsSource = empleados;
             Data_Empleados.Visibility = Visibility.Visible;
+            Eliminar.Visibility = Visibility.Hidden;
+            Modificar.Visibility = Visibility.Hidden;
+
         }
         private void MostrarContraseña_Click(object sender, RoutedEventArgs e)
         {
@@ -106,6 +113,8 @@ namespace Administracion
 
             Data_Doctores.ItemsSource = doctores;
             Data_Doctores.Visibility = Visibility.Visible;
+            Eliminar.Visibility = Visibility.Visible;
+            Modificar.Visibility = Visibility.Visible;
         }
         private void Mostrar_auxiliares_Click_1(object sender, RoutedEventArgs e)
         {
@@ -132,6 +141,8 @@ namespace Administracion
 
             // Hacer visible el DataGrid
             Data_Auxiliares.Visibility = Visibility.Visible;
+            Eliminar.Visibility = Visibility.Visible;
+            Modificar.Visibility = Visibility.Visible;
         }
 
         private void Mostrar_Pacientes_Click(object sender, RoutedEventArgs e)
@@ -154,6 +165,8 @@ namespace Administracion
             Data_Pacientes.ItemsSource = pacientes;
 
             Data_Pacientes.Visibility= Visibility.Visible;
+            Eliminar.Visibility = Visibility.Visible;
+            Modificar.Visibility = Visibility.Visible;
         }
 
         private void Modificar_Click(object sender, RoutedEventArgs e)
@@ -163,7 +176,67 @@ namespace Administracion
 
         private void Eliminar_Click(object sender, RoutedEventArgs e)
         {
-            
+            MessageBoxResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este registro?",
+                                                  "Confirmar Eliminación",
+                                                  MessageBoxButton.YesNo,
+                                                  MessageBoxImage.Warning);
+
+            if (Data_Doctores.SelectedItem is Doctores doctorSeleccionado) 
+            {
+                if (doctorSeleccionado == null || doctorSeleccionado.Id == null)
+                {
+                    MessageBox.Show("Seleccione un empleado por favor");
+                }
+                else
+                {
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        Funciones.Program.EliminarDoctor(doctorSeleccionado.Id);
+                        List<Doctores> doctores = Funciones.Program.ObtenerDoctores();
+                        Data_Doctores.ItemsSource = doctores;
+                    }
+                }
+            }
+            if (Data_Pacientes.SelectedItem is Pacientes pacienteSeleccionado)
+            {
+                if (pacienteSeleccionado == null || pacienteSeleccionado.IdPacientes == null)
+                {
+                    MessageBox.Show("Seleccione un paciente por favor");
+                }
+                else
+                {
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        Funciones.Program.EliminarPaciente(pacienteSeleccionado.IdPacientes);
+                        Empleados empleados = Funciones.Program.ObtenerDatosEmpleadoPorEmail(emailG);
+                        List<Pacientes> pacientes = Funciones.Program.MostrarPacientes(empleados.Id);
+                        Data_Pacientes.ItemsSource = pacientes;
+                    }
+                }
+            }
+            if (Data_Auxiliares.SelectedItem is EmpleadosAux auxiliarSeleccionado)
+            {
+                if (auxiliarSeleccionado == null || auxiliarSeleccionado.Id == null)
+                {
+                    MessageBox.Show("Seleccione un empleado por favor");
+                }
+                else
+                {
+                    if (result == MessageBoxResult.Yes) // Asegúrate de que result esté definido
+                    {
+                        Funciones.Program.EliminarAuxiliar(auxiliarSeleccionado.Id);
+                        List<EmpleadosAux> auxiliares = Funciones.Program.ObtenerAuxiliares();
+                        Data_Auxiliares.ItemsSource = auxiliares;
+                    }
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una casilla para eliminar");
+            }
+
+
         }
 
         private void Agregar_Paciente_Click(object sender, RoutedEventArgs e)
@@ -247,5 +320,7 @@ namespace Administracion
             Data_Doctores.ItemsSource = doctores;
             Data_Doctores.Visibility = Visibility.Visible;
         }
+
+        //Agregar boton a la derecha del datagrid paciente
     }
 }

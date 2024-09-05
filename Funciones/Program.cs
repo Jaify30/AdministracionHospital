@@ -732,5 +732,90 @@ namespace Funciones
             }
             return doctorBuscado;
         }
+        public static void EliminarDoctor(int idEmpleado)
+        {
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                SqlTransaction transaction = conexion.BeginTransaction();
+
+                try
+                {
+                    // Eliminar de Doctores
+                    SqlCommand EliminarDoctores = new SqlCommand("DELETE FROM Doctores WHERE IdDoctor = @Id", conexion, transaction);
+                    EliminarDoctores.Parameters.AddWithValue("@Id", idEmpleado);
+                    EliminarDoctores.ExecuteNonQuery();
+
+                    // Eliminar de Empleados
+                    SqlCommand deleteEmpleadosCommand = new SqlCommand("DELETE FROM Empleados WHERE Id = @Id", conexion, transaction);
+                    deleteEmpleadosCommand.Parameters.AddWithValue("@Id", idEmpleado);
+                    deleteEmpleadosCommand.ExecuteNonQuery();
+
+                    // Confirmar la transacción
+                    transaction.Commit();
+                    MessageBox.Show("Se ha eliminado el empleado.");
+                }
+                catch(Exception ex)
+                {
+                    // Si ocurre un error, revertir la transacción
+                    transaction.Rollback();
+                    Console.WriteLine("Ocurrió un error: " + ex.Message);
+                }
+            }
+
+        }
+        public static void EliminarAuxiliar(int idAuxiliar)
+        {
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                SqlTransaction sqlTransaction = conexion.BeginTransaction();
+
+                try
+                {
+                    // Eliminar de Auxiliar
+                    SqlCommand deleteAuxiliaresCommand = new SqlCommand("DELETE FROM EmpleadosAux WHERE IdEmpleado = @Id", conexion, sqlTransaction);
+                    deleteAuxiliaresCommand.Parameters.AddWithValue("@Id", idAuxiliar);
+                    deleteAuxiliaresCommand.ExecuteNonQuery();
+
+                    // Eliminar de Empleados
+                    SqlCommand deleteEmpleadosCommand = new SqlCommand("DELETE FROM Empleados WHERE Id = @Id", conexion, sqlTransaction);
+                    deleteEmpleadosCommand.Parameters.AddWithValue("@Id", idAuxiliar);
+                    deleteEmpleadosCommand.ExecuteNonQuery();
+
+                    sqlTransaction.Commit();
+                    MessageBox.Show("Se ha eliminado el empleado");
+                }
+                catch(Exception ex)
+                {
+                    // Si ocurre un error, revertir la transacción
+                    sqlTransaction.Rollback();
+                    Console.WriteLine("Ocurrió un error: " + ex.Message);
+                }
+            }
+        }
+        public static void EliminarPaciente(int idPaciente)
+        {
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                SqlTransaction sqlTransaction = conexion.BeginTransaction();
+
+                try
+                { 
+                    // Eliminar de Empleados
+                    SqlCommand deletePacienteCommand = new SqlCommand("DELETE FROM Pacientes WHERE IdPacientes = @Id", conexion, sqlTransaction);
+                    deletePacienteCommand.Parameters.AddWithValue("@Id", idPaciente);
+                    deletePacienteCommand.ExecuteNonQuery();
+
+                    sqlTransaction.Commit();
+                    MessageBox.Show("Se ha eliminado el paciente");
+                }
+                catch (Exception ex)
+                {
+                    // Si ocurre un error, revertir la transacción
+                    sqlTransaction.Rollback();
+                    Console.WriteLine("Ocurrió un error: " + ex.Message);
+                }
+            }
+        }
     }
 }
