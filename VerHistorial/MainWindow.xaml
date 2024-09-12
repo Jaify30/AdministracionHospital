@@ -1,0 +1,152 @@
+﻿<Window x:Class="VerHistorial.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VerHistorial"
+        mc:Ignorable="d"
+            AllowsTransparency="True"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    Background="Transparent"
+    Title="Inicio sesión" Height="800" Width="600">
+
+
+    <Grid>
+
+        <Border CornerRadius="20" Background="#212529" />
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                <Button Grid.Column="0" FontSize="30" HorizontalAlignment="Right" Content="-" Width="30" Click="Minimize_Click" Background="Transparent" Foreground="Aqua" BorderBrush="Transparent">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border 
+                                x:Name="border"
+                                Background="Transparent"
+                                >
+
+                                <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Content="-"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D2023"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0,0,5,0" Grid.Column="1" FontSize="20" Content="X" Width="30" Click="Close_Click" Background="Transparent" Foreground="Aqua" BorderBrush="Transparent">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border 
+                        x:Name="border"
+                        Background="Transparent"
+                        CornerRadius="0,10,0,0"
+            >
+
+                                <ContentPresenter 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Content="X"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D2023"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+
+
+            </Grid>
+
+            <StackPanel Grid.Row="1">
+                <TextBlock Margin="0,10,0,10" Grid.Column="0" Name="NombreUsuario" FontFamily="Tahoma" FontSize="20" HorizontalAlignment="Center" Foreground="Beige" Background="#1D2023" VerticalAlignment="Center"></TextBlock>
+                
+                <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="600" Width="450">
+                    <TextBox
+                    Name="Historial"  
+                    FontFamily="Tahoma" 
+                    FontSize="20" 
+                    Foreground="Beige" 
+                    Background="Transparent" 
+                    BorderThickness="0" 
+                    Padding="5"
+                    AcceptsReturn="True"
+                    TextWrapping="Wrap"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                </Border>
+                <DockPanel>
+
+                    <Button Margin="125,50,0,0" Name="Volver" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Volver_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border 
+                                    x:Name="border"
+                                    Background="White"
+                                    CornerRadius="5">   
+
+                                    <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Content="Volver"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="#212529"/>
+                                        <Setter Property="Foreground" Value="Beige"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button Margin="0,50,75,0" Name="Confirmar_Cambios" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Confirmar_Cambios_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border 
+                                    x:Name="border"
+                                    Background="White"
+                                    CornerRadius="5">
+
+                                    <ContentPresenter 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Content="Confirmar"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="#212529"/>
+                                        <Setter Property="Foreground" Value="Beige"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+
+
+
+    </Grid>
+</Window>

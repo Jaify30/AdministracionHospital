@@ -326,7 +326,14 @@
                             <DataGridTextColumn Header="Legajo" Binding="{Binding Legajo}"/>
                             <DataGridTextColumn Header="Fecha de ingreso" Binding="{Binding FechaIngreso, StringFormat=d}"/>
                             <DataGridTextColumn Header="Fecha de Nacimiento" Binding="{Binding FechaNacimiento, StringFormat=d}"/>
-                            <DataGridTextColumn Header="Historial" Binding="{Binding Historial}"/>
+                            
+                            <DataGridTemplateColumn Header="Acciones">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button BorderBrush="Transparent" FontFamily="Tahoma" FontSize="15" HorizontalAlignment="Center" Content="Ver Historial" Width="100" Height="50" Click="Ver_Historial_Click" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                         
 

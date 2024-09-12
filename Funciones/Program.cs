@@ -377,6 +377,31 @@ namespace Funciones
 
             return empleado;
         }
+
+        public static Pacientes ObtenerHistorialPacientePorEmail(string Email)
+        {
+            Pacientes pacientes = null;
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = @"SELECT Historial FROM Pacientes WHERE Email=@Email";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@Email",Email);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    pacientes = new Pacientes
+                    {
+                        Historial = reader.GetString(0)
+                    };
+                }
+            }
+            return pacientes;
+        }
+
         public static List<Empleados> ObtenerTodosLosEmpleados()
         {
             List<Empleados> empleados = new List<Empleados>();
@@ -816,6 +841,37 @@ namespace Funciones
                     Console.WriteLine("Ocurrió un error: " + ex.Message);
                 }
             }
+        }
+        public static int ActualizarHistorialPaciente(int idPaciente, string nuevoHistorial)
+        {
+            int retorno = 0;
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                using (SqlTransaction transaction = conexion.BeginTransaction())
+                {
+                    try
+                    {
+                        // Actualiza solo el campo Historial del paciente con el id dado
+                        string query = @"UPDATE Pacientes SET Historial = @Historial WHERE IdPacientes = @IdPacientes";
+
+                        SqlCommand cmd = new SqlCommand(query, conexion, transaction);
+                        cmd.Parameters.AddWithValue("@Historial", nuevoHistorial);
+                        cmd.Parameters.AddWithValue("@IdPacientes", idPaciente);
+
+                        retorno = cmd.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+
+            return retorno;
         }
     }
 }

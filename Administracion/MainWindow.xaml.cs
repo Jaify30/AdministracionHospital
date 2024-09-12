@@ -144,7 +144,6 @@ namespace Administracion
             Eliminar.Visibility = Visibility.Visible;
             Modificar.Visibility = Visibility.Visible;
         }
-
         private void Mostrar_Pacientes_Click(object sender, RoutedEventArgs e)
         {
             Empleados empleados = Funciones.Program.ObtenerDatosEmpleadoPorEmail(emailG);
@@ -168,12 +167,47 @@ namespace Administracion
             Eliminar.Visibility = Visibility.Visible;
             Modificar.Visibility = Visibility.Visible;
         }
-
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
+            if (Data_Doctores.SelectedItem is Doctores doctorSeleccionado)
+            {
+                if (doctorSeleccionado == null || doctorSeleccionado.Id == null)
+                {
+                    MessageBox.Show("Seleccione un empleado por favor");
+                }
+                else
+                {
+                    
+                }
+            }
+            if (Data_Pacientes.SelectedItem is Pacientes pacienteSeleccionado)
+            {
+                if (pacienteSeleccionado == null || pacienteSeleccionado.IdPacientes == null)
+                {
+                    MessageBox.Show("Seleccione un paciente por favor");
+                }
+                else
+                {
+                    
+                }
+            }
+            if (Data_Auxiliares.SelectedItem is EmpleadosAux auxiliarSeleccionado)
+            {
+                if (auxiliarSeleccionado == null || auxiliarSeleccionado.Id == null)
+                {
+                    MessageBox.Show("Seleccione un empleado por favor");
+                }
+                else
+                {
+                    
+                }
 
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una casilla para eliminar");
+            }
         }
-
         private void Eliminar_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este registro?",
@@ -238,7 +272,6 @@ namespace Administracion
 
 
         }
-
         private void Agregar_Paciente_Click(object sender, RoutedEventArgs e)
         {
             string TieneMatricula = Funciones.Program.ObtenerMatriculaDoctor(emailG);
@@ -255,7 +288,6 @@ namespace Administracion
                 AgregarPacientes.ShowDialog();
             }
         }
-
         private void Buscar_Paciente_Click(object sender, RoutedEventArgs e)
         {
             Empleados empleados = Funciones.Program.ObtenerDatosEmpleadoPorEmail(emailG);
@@ -289,7 +321,6 @@ namespace Administracion
 
             Data_Pacientes.Visibility = Visibility.Visible;
         }
-
         private void Buscar_Doctor_Click(object sender, RoutedEventArgs e)
         {
             Data_Empleados.Visibility = Visibility.Hidden;
@@ -322,5 +353,20 @@ namespace Administracion
         }
 
         //Agregar boton a la derecha del datagrid paciente
+        private void Ver_Historial_Click(object sender, RoutedEventArgs e)
+        {
+            if (Data_Pacientes.SelectedItem is Pacientes pacienteSeleccionado)
+            {
+                if (pacienteSeleccionado == null || pacienteSeleccionado.IdPacientes == null)
+                {
+                    MessageBox.Show("Seleccione un paciente por favor");
+                }
+                else
+                {
+                    VerHistorial.MainWindow Historial = new VerHistorial.MainWindow(pacienteSeleccionado.Email,pacienteSeleccionado.Nombre,pacienteSeleccionado.Apellido, pacienteSeleccionado.IdPacientes);
+                    Historial.ShowDialog();
+                }
+            }
+        }
     }
 }
