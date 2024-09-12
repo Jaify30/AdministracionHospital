@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistroPacientes", "Regist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerHistorial", "VerHistorial\VerHistorial.csproj", "{18B0D5BC-DAE6-401A-8075-997ED6A55BBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModicarPacientes", "ModicarPacientes\ModicarPacientes.csproj", "{B01F0492-166F-4658-9DC9-CC5B865185FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{18B0D5BC-DAE6-401A-8075-997ED6A55BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18B0D5BC-DAE6-401A-8075-997ED6A55BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18B0D5BC-DAE6-401A-8075-997ED6A55BBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B01F0492-166F-4658-9DC9-CC5B865185FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01F0492-166F-4658-9DC9-CC5B865185FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B01F0492-166F-4658-9DC9-CC5B865185FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B01F0492-166F-4658-9DC9-CC5B865185FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
