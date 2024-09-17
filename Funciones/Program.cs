@@ -649,7 +649,6 @@ namespace Funciones
             }
             return pacientes;
         }
-        //Terminar los botones de modificar y eliminar.
         public static List<Pacientes> BuscarPaciente(int Documento, int idDoctor)
         {
             List<Pacientes> pacienteBuscado = new List<Pacientes>();

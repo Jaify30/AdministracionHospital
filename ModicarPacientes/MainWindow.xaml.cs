@@ -20,9 +20,94 @@ namespace ModicarPacientes
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
-        {
+        public MainWindow(Entidades.Program.Pacientes pacientes)
+        {       
+            
             InitializeComponent();
+            EmailG.Text = pacientes.Email;
+            DocumentoG.Text = pacientes.Documento.ToString();
+            NombreG.Text = pacientes.Nombre;
+            ApellidoG.Text = pacientes.Apellido;
+            TelefonoG.Text = pacientes.Telefono;
+            FechaIngreso.Text = pacientes.FechaIngreso.ToString();
+            FechaNacimiento.Text = pacientes.FechaNacimiento.ToString();
+            LegajoG.Text = pacientes.Legajo;
+        }
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Volver_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Modificar_Click(object sender, RoutedEventArgs e)
+        {
+            //Terminar de darle funcion.
+        }
+        private void FechaIngreso_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!FechaIngreso.SelectedDate.HasValue)
+            {
+                ErrorTextBlock1.Text = "Debe seleccionar una fecha.";
+                ErrorTextBlock1.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                DateTime selectedDate = FechaIngreso.SelectedDate.Value;
+                DateTime currentDate = DateTime.Now;
+                DateTime minimumDate = currentDate.AddYears(-150);
+
+                if (selectedDate > currentDate || selectedDate < minimumDate)
+                {
+                    ErrorTextBlock1.Text = "La fecha seleccionada no es válida.";
+                    ErrorTextBlock1.Visibility = Visibility.Visible;
+                    FechaIngreso.SelectedDate = null; // Opcional: Limpia la selección
+                }
+                else
+                {
+                    ErrorTextBlock1.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        private void FechaNacimiento_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!FechaNacimiento.SelectedDate.HasValue)
+            {
+                ErrorTextBlock.Text = "Debe seleccionar una fecha.";
+                ErrorTextBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                DateTime selectedDate = FechaNacimiento.SelectedDate.Value;
+                DateTime currentDate = DateTime.Now;
+                DateTime minimumDate = currentDate.AddYears(-150);
+
+                int edad = currentDate.Year - selectedDate.Year;
+                if (currentDate.Month < selectedDate.Month ||
+                (currentDate.Month == selectedDate.Month && currentDate.Day < selectedDate.Day))
+                {
+                    edad--;
+                }
+
+                if (selectedDate > currentDate || selectedDate < minimumDate)
+                {
+                    ErrorTextBlock.Text = "La fecha seleccionada no es válida.";
+                    ErrorTextBlock.Visibility = Visibility.Visible;
+                    FechaNacimiento.SelectedDate = null; // Opcional: Limpia la selección
+                }
+                else
+                {
+                    ErrorTextBlock.Visibility = Visibility.Collapsed;
+                }
+            }
         }
     }
 }

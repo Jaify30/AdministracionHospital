@@ -94,5 +94,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entidades\Entidades.csproj">
+      <Project>{6caae0a3-59d0-44ea-a39a-ccaf1cf510b8}</Project>
+      <Name>Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Funciones\Funciones.csproj">
+      <Project>{635acfd3-5320-41f2-b458-5b87531693a1}</Project>
+      <Name>Funciones</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

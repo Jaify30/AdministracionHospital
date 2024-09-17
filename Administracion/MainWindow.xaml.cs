@@ -188,7 +188,8 @@ namespace Administracion
                 }
                 else
                 {
-                    
+                    ModicarPacientes.MainWindow Paciente = new ModicarPacientes.MainWindow(pacienteSeleccionado);
+                    Paciente.ShowDialog();
                 }
             }
             if (Data_Auxiliares.SelectedItem is EmpleadosAux auxiliarSeleccionado)

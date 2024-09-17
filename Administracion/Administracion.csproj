@@ -119,6 +119,10 @@
       <Project>{635acfd3-5320-41f2-b458-5b87531693a1}</Project>
       <Name>Funciones</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ModicarPacientes\ModicarPacientes.csproj">
+      <Project>{b01f0492-166f-4658-9dc9-cc5b865185fe}</Project>
+      <Name>ModicarPacientes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RegistroPacientes\RegistroPacientes.csproj">
       <Project>{29dd3d12-b07c-4b4a-84e2-f1caef798440}</Project>
       <Name>RegistroPacientes</Name>
