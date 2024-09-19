@@ -873,6 +873,43 @@ namespace Funciones
             return retorno;
         }
 
+        public static void ModificarPaciente(int idPaciente, string emailPaciente, int documentoPaciente,
+            string nombrePaciente, string apellidoPaciente, string telefonoPaciente, DateTime fechaingreso, DateTime fechanacimiento,
+            string legajo)
+        {
+            using (SqlConnection conexion= conexionBBDD())
+            {
+                SqlTransaction transaction = conexion.BeginTransaction();
+                string query = "UPDATE Pacientes " +
+                "SET Email = @Email, Documento = @Documento, Nombre = @Nombre, Apellido = @Apellido, " +
+                "Telefono = @Telefono, FechaIngreso = @FechaIngreso, FechaNacimiento = @FechaNacimiento, " +
+                "Legajo = @Legajo " +
+                "WHERE IdPacientes = @Id";
+
+                try
+                { 
+                    SqlCommand updatecmd = new SqlCommand(query, conexion, transaction);
+                    updatecmd.Parameters.AddWithValue("@Id", idPaciente);
+                    updatecmd.Parameters.AddWithValue("@Email", emailPaciente);
+                    updatecmd.Parameters.AddWithValue("@Documento", documentoPaciente);
+                    updatecmd.Parameters.AddWithValue("@Nombre", nombrePaciente);
+                    updatecmd.Parameters.AddWithValue("@Apellido", apellidoPaciente);
+                    updatecmd.Parameters.AddWithValue("@Telefono", telefonoPaciente);
+                    updatecmd.Parameters.AddWithValue("@FechaIngreso", fechaingreso);
+                    updatecmd.Parameters.AddWithValue("@FechaNacimiento", fechanacimiento);
+                    updatecmd.Parameters.AddWithValue("@Legajo", legajo);
+                    // Ejecutar el comando
+                    updatecmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                }
+                catch(Exception e)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show(e.Message);
+                }
+            }
+        }
         //Terminar con las ventanas de modificaciones
     }
 }

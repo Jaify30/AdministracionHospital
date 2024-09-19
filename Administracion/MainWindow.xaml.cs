@@ -206,7 +206,7 @@ namespace Administracion
             }
             else
             {
-                MessageBox.Show("Seleccione una casilla para eliminar");
+                MessageBox.Show("Seleccione una casilla para Modificar");
             }
         }
         private void Eliminar_Click(object sender, RoutedEventArgs e)
@@ -270,7 +270,6 @@ namespace Administracion
             {
                 MessageBox.Show("Seleccione una casilla para eliminar");
             }
-
 
         }
         private void Agregar_Paciente_Click(object sender, RoutedEventArgs e)

@@ -20,10 +20,12 @@ namespace ModicarPacientes
     /// </summary>
     public partial class MainWindow : Window
     {
+        public int idPaciente;
         public MainWindow(Entidades.Program.Pacientes pacientes)
         {       
             
             InitializeComponent();
+            idPaciente = pacientes.IdPacientes;
             EmailG.Text = pacientes.Email;
             DocumentoG.Text = pacientes.Documento.ToString();
             NombreG.Text = pacientes.Nombre;
@@ -49,7 +51,15 @@ namespace ModicarPacientes
 
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
-            //Terminar de darle funcion.
+            MessageBoxResult resultado = MessageBox.Show("¿Está seguro de que desea modificar los datos del paciente?",
+           "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                Funciones.Program.ModificarPaciente(idPaciente, EmailG.Text, int.Parse(DocumentoG.Text), NombreG.Text, ApellidoG.Text, TelefonoG.Text, FechaIngreso.SelectedDate.Value, FechaNacimiento.SelectedDate.Value, LegajoG.Text);
+                MessageBox.Show("Paciente modificado correctamente.");
+            }
+
         }
         private void FechaIngreso_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
