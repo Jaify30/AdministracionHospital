@@ -177,7 +177,8 @@ namespace Administracion
                 }
                 else
                 {
-                    
+                    ModificarDoctores.MainWindow Doctores = new ModificarDoctores.MainWindow(doctorSeleccionado);
+                    Doctores.ShowDialog();
                 }
             }
             if (Data_Pacientes.SelectedItem is Pacientes pacienteSeleccionado)

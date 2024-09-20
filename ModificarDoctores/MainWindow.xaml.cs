@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,27 +14,32 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ModicarPacientes
+namespace ModificarDoctores
 {
     /// <summary>
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int idPaciente;
-        public MainWindow(Entidades.Program.Pacientes pacientes)
-        {       
-            
+        public int idDoctor;
+        Entidades.Program.Doctores Doctores;
+        public MainWindow(Entidades.Program.Doctores doctor)
+        {
             InitializeComponent();
-            idPaciente = pacientes.IdPacientes;
-            EmailG.Text = pacientes.Email;
-            DocumentoG.Text = pacientes.Documento.ToString();
-            NombreG.Text = pacientes.Nombre;
-            ApellidoG.Text = pacientes.Apellido;
-            TelefonoG.Text = pacientes.Telefono;
-            FechaIngreso.Text = pacientes.FechaIngreso.ToString();
-            FechaNacimiento.Text = pacientes.FechaNacimiento.ToString();
-            LegajoG.Text = pacientes.Legajo;
+            idDoctor = doctor.Id;
+            EmailG.Text = doctor.Email;
+            DocumentoG.Text=doctor.Documento.ToString();
+            NombreG.Text = doctor.Nombre;
+            ApellidoG.Text = doctor.Apellido;
+            TelefonoG.Text = doctor.Telefono;
+            FechaIngreso.Text=doctor.FechaIngreso.ToString();
+            FechaNacimiento.Text=doctor.FechaNacimiento.ToString();
+            NacionalidadG.Text = doctor.Nacionalidad;
+            Domicilio.Text = doctor.Domicilio;
+            Localidad.Text = doctor.Localidad;
+            cmbCargos.Text = doctor.Cargo;
+            MatriculaG.Text = doctor.Matricula;
+            Doctores = doctor;
         }
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
@@ -52,25 +58,40 @@ namespace ModicarPacientes
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult resultado = MessageBox.Show("¿Está seguro de que desea modificar los datos del paciente?",
-           "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+          "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (resultado == MessageBoxResult.Yes)
             {
-                if (string.IsNullOrEmpty(EmailG.Text) || string.IsNullOrEmpty(DocumentoG.Text) || string.IsNullOrEmpty(NombreG.Text) || string.IsNullOrEmpty(ApellidoG.Text)
-                    || string.IsNullOrEmpty(TelefonoG.Text) || string.IsNullOrEmpty(FechaIngreso.Text) || string.IsNullOrEmpty(FechaNacimiento.Text) || string.IsNullOrEmpty(LegajoG.Text))
+                if (string.IsNullOrWhiteSpace(EmailG.Text) || string.IsNullOrWhiteSpace(DocumentoG.Text) || string.IsNullOrWhiteSpace(NombreG.Text) || string.IsNullOrWhiteSpace(ApellidoG.Text) 
+                    || string.IsNullOrWhiteSpace(TelefonoG.Text) || string.IsNullOrWhiteSpace(FechaIngreso.Text) || string.IsNullOrWhiteSpace(NacionalidadG.Text) || string.IsNullOrWhiteSpace(Domicilio.Text)
+                    || string.IsNullOrWhiteSpace(Localidad.Text) || string.IsNullOrWhiteSpace(cmbCargos.Text) || string.IsNullOrWhiteSpace(MatriculaG.Text) || string.IsNullOrWhiteSpace(FechaNacimiento.Text))
                 {
-                    MessageBox.Show("No puede dejar ningun campo en blanco...","ATENCION");
+                    MessageBox.Show("No puede dejar ningun campo en blanco...", "ATENCION");
                     return;
                 }
                 else
                 {
-                    Funciones.Program.ModificarPaciente(idPaciente, EmailG.Text, int.Parse(DocumentoG.Text), NombreG.Text, ApellidoG.Text, TelefonoG.Text, FechaIngreso.SelectedDate.Value, FechaNacimiento.SelectedDate.Value, LegajoG.Text);
-                    MessageBox.Show("Paciente modificado correctamente.");
-                }
-                
-            }
+                    Doctores.Id = idDoctor;
+                    Doctores.Email = EmailG.Text;
+                    Doctores.Documento = int.Parse(DocumentoG.Text); // Asegúrate de que esto es un número válido
+                    Doctores.Nombre = NombreG.Text;
+                    Doctores.Apellido = ApellidoG.Text;
+                    Doctores.Telefono = TelefonoG.Text;
+                    Doctores.FechaIngreso = DateTime.Parse(FechaIngreso.Text); // Manejar posibles errores de formato
+                    Doctores.FechaNacimiento = DateTime.Parse(FechaNacimiento.Text); // Manejar posibles errores de formato
+                    Doctores.Nacionalidad = NacionalidadG.Text;
+                    Doctores.Domicilio = Domicilio.Text;
+                    Doctores.Localidad = Localidad.Text;
+                    Doctores.Cargo = cmbCargos.Text;
+                    Doctores.Matricula = MatriculaG.Text;
 
+                    Funciones.Program.ModificarDoctores(Doctores);
+                    MessageBox.Show("Paciente modificado correctamente.");
+                    //funcion de modificar
+                }
+            }
         }
+
         private void FechaIngreso_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!FechaIngreso.SelectedDate.HasValue)
@@ -129,5 +150,6 @@ namespace ModicarPacientes
                 }
             }
         }
+
     }
 }

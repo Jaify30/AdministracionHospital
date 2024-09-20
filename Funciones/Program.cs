@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using static Entidades.Program;
+using System.Net;
+using System.Net.Mail;
 
 namespace Funciones
 {
@@ -16,6 +18,7 @@ namespace Funciones
     {
         static void Main(string[] args)
         {
+
         }
 
         public static SqlConnection conexionBBDD() //Se crea la conexion a la base de datos
@@ -377,7 +380,6 @@ namespace Funciones
 
             return empleado;
         }
-
         public static Pacientes ObtenerHistorialPacientePorEmail(string Email)
         {
             Pacientes pacientes = null;
@@ -401,7 +403,6 @@ namespace Funciones
             }
             return pacientes;
         }
-
         public static List<Empleados> ObtenerTodosLosEmpleados()
         {
             List<Empleados> empleados = new List<Empleados>();
@@ -911,5 +912,68 @@ namespace Funciones
             }
         }
         //Terminar con las ventanas de modificaciones
+        public static void ModificarDoctores(Entidades.Program.Doctores doctor)
+        {
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string queryEmpleado = @"UPDATE Empleados 
+                             SET Nombre = @Nombre, 
+                                 Apellido = @Apellido, 
+                                 Email = @Email, 
+                                 Nacionalidad = @Nacionalidad, 
+                                 FechaNacimiento = @FechaNacimiento, 
+                                 FechaIngreso = @FechaIngreso, 
+                                 Telefono = @Telefono, 
+                                 Domicilio = @Domicilio, 
+                                 Localidad = @Localidad, 
+                                 Documento = @Documento
+                             WHERE Id = @IdEmpleado";
+
+                // Query SQL para actualizar los datos en la tabla Doctores
+                string queryDoctor = @"UPDATE Doctores 
+                           SET Cargo = @Cargo, 
+                               Matricula = @Matricula
+                           WHERE IdDoctor = @IdEmpleado";
+                using (SqlTransaction transaction = conexion.BeginTransaction())
+                {
+                    try
+                    {
+                        using (SqlCommand cmdEmpleados=new SqlCommand(queryEmpleado,conexion,transaction))
+                        {
+                            cmdEmpleados.Parameters.AddWithValue("@IdEmpleado", doctor.Id);
+                            cmdEmpleados.Parameters.AddWithValue("@Nombre",doctor.Nombre);
+                            cmdEmpleados.Parameters.AddWithValue("@Apellido",doctor.Apellido);
+                            cmdEmpleados.Parameters.AddWithValue("@Email",doctor.Email);
+                            cmdEmpleados.Parameters.AddWithValue("@Nacionalidad",doctor.Nacionalidad);
+                            cmdEmpleados.Parameters.AddWithValue("@FechaNacimiento",doctor.FechaNacimiento);
+                            cmdEmpleados.Parameters.AddWithValue("@FechaIngreso", doctor.FechaIngreso);
+                            cmdEmpleados.Parameters.AddWithValue("@Telefono", doctor.Telefono);
+                            cmdEmpleados.Parameters.AddWithValue("@Domicilio", doctor.Domicilio);
+                            cmdEmpleados.Parameters.AddWithValue("@Localidad", doctor.Localidad);
+                            cmdEmpleados.Parameters.AddWithValue("@Documento", doctor.Documento);
+                            // Ejecuta el comando para actualizar la tabla Empleados
+                            cmdEmpleados.ExecuteNonQuery();
+                        }
+                        using (SqlCommand cmdDoctor= new SqlCommand(queryDoctor,conexion,transaction))
+                        {
+                            cmdDoctor.Parameters.AddWithValue("@IdEmpleado", doctor.Id);
+                            cmdDoctor.Parameters.AddWithValue("@Cargo", doctor.Cargo);
+                            cmdDoctor.Parameters.AddWithValue("@Matricula", doctor.Matricula);
+                            // Ejecuta el comando para actualizar la tabla Doctores
+                            cmdDoctor.ExecuteNonQuery();
+                        }
+
+                        // Si ambos comandos se ejecutaron correctamente, confirma la transacción
+                        transaction.Commit();
+                    }
+                    catch(Exception ex)
+                    {
+                        // Si ocurre un error, revierte la transacción
+                        transaction.Rollback();
+                        Console.WriteLine("Error: " + ex.Message);
+                    }
+                }
+            }
+        }
     }
 }

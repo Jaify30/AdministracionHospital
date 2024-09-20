@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net;
+using System.Net.Mail;
 
 namespace RegistroMed
 {
@@ -95,12 +97,10 @@ namespace RegistroMed
             };
             cmbCargos.ItemsSource = cargos;
         }//Llena con datos el combo box con las diferentes especialidades
-
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }//boton para cerrar la ventana
-
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
