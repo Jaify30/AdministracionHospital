@@ -201,7 +201,8 @@ namespace Administracion
                 }
                 else
                 {
-                    
+                    ModificarAuxiliares.MainWindow modificarAuxiliares =  new ModificarAuxiliares.MainWindow(auxiliarSeleccionado);
+                    modificarAuxiliares.ShowDialog();
                 }
 
             }
@@ -352,8 +353,6 @@ namespace Administracion
             Data_Doctores.ItemsSource = doctores;
             Data_Doctores.Visibility = Visibility.Visible;
         }
-
-        //Agregar boton a la derecha del datagrid paciente
         private void Ver_Historial_Click(object sender, RoutedEventArgs e)
         {
             if (Data_Pacientes.SelectedItem is Pacientes pacienteSeleccionado)

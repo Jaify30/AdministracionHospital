@@ -975,5 +975,64 @@ namespace Funciones
                 }
             }
         }
+
+        public static void ModificarAuxiliares(Entidades.Program.EmpleadosAux Auxiliar)
+        {
+            using (SqlConnection conexion=conexionBBDD())
+            {
+                string queryEmpleado = @"UPDATE Empleados 
+                             SET Nombre = @Nombre, 
+                                 Apellido = @Apellido, 
+                                 Email = @Email, 
+                                 Nacionalidad = @Nacionalidad, 
+                                 FechaNacimiento = @FechaNacimiento, 
+                                 FechaIngreso = @FechaIngreso, 
+                                 Telefono = @Telefono, 
+                                 Domicilio = @Domicilio, 
+                                 Localidad = @Localidad, 
+                                 Documento = @Documento
+                             WHERE Id = @IdEmpleado";
+
+                string queryAux = @"UPDATE EmpleadosAux
+                                SET Cargo=@Cargo
+                                WHERE IdEmpleado=@IdEmpleado";
+
+                using (SqlTransaction transaction = conexion.BeginTransaction())
+                {
+                    try
+                    {
+                        using (SqlCommand cmdEmpleados = new SqlCommand(queryEmpleado, conexion, transaction))
+                        {
+                            cmdEmpleados.Parameters.AddWithValue("@IdEmpleado", Auxiliar.Id);
+                            cmdEmpleados.Parameters.AddWithValue("@Nombre", Auxiliar.Nombre);
+                            cmdEmpleados.Parameters.AddWithValue("@Apellido", Auxiliar.Apellido);
+                            cmdEmpleados.Parameters.AddWithValue("@Email", Auxiliar.Email);
+                            cmdEmpleados.Parameters.AddWithValue("@Nacionalidad", Auxiliar.Nacionalidad);
+                            cmdEmpleados.Parameters.AddWithValue("@FechaNacimiento", Auxiliar.FechaNacimiento);
+                            cmdEmpleados.Parameters.AddWithValue("@FechaIngreso", Auxiliar.FechaIngreso);
+                            cmdEmpleados.Parameters.AddWithValue("@Telefono", Auxiliar.Telefono);
+                            cmdEmpleados.Parameters.AddWithValue("@Domicilio", Auxiliar.Domicilio);
+                            cmdEmpleados.Parameters.AddWithValue("@Localidad", Auxiliar.Localidad);
+                            cmdEmpleados.Parameters.AddWithValue("@Documento", Auxiliar.Documento);
+                            // Ejecuta el comando para actualizar la tabla Empleados
+                            cmdEmpleados.ExecuteNonQuery();
+                        }
+                        using (SqlCommand cmdAux = new SqlCommand(queryAux, conexion, transaction))
+                        {
+                            cmdAux.Parameters.AddWithValue("@IdEmpleado", Auxiliar.Id);
+                            cmdAux.Parameters.AddWithValue("@Cargo", Auxiliar.Cargo);
+                            // Ejecuta el comando para actualizar la tabla Doctores
+                            cmdAux.ExecuteNonQuery();
+                        }
+                        transaction.Commit();
+                    }
+                    catch(Exception ex)
+                    {
+                        transaction.Rollback();
+                        Console.WriteLine("Error: " + ex.Message);
+                    }
+                }
+            }
+        }
     }
 }

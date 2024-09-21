@@ -26,6 +26,7 @@ namespace ModificarDoctores
         public MainWindow(Entidades.Program.Doctores doctor)
         {
             InitializeComponent();
+            LlenarComboBox();
             idDoctor = doctor.Id;
             EmailG.Text = doctor.Email;
             DocumentoG.Text=doctor.Documento.ToString();
@@ -49,7 +50,74 @@ namespace ModificarDoctores
         {
             this.Close();
         }
-
+        private void LlenarComboBox()
+        {
+            List<string> cargos = new List<string>()
+            {
+                "Alergólogo",
+                "Anestesiólogo",
+                "Cardiólogo",
+                "Cardiólogo intervencionista",
+                "Cirujano",
+                "Cirujano cardiovascular",
+                "Cirujano de colon y recto",
+                "Cirujano de mano",
+                "Cirujano maxilofacial",
+                "Cirujano neurólogo",
+                "Cirujano ortopédico",
+                "Cirujano plástico",
+                "Cirujano torácico",
+                "Cirujano vascular",
+                "Dermatólogo",
+                "Endocrinólogo",
+                "Endocrinólogo especialista en reproducción",
+                "Especialista en el manejo del dolor",
+                "Especialista en electrofisiología cardíaca",
+                "Especialista en enfermedades contagiosas",
+                "Especialista en fisioterapia y rehabilitación",
+                "Especialista en lesiones de la médula espinal",
+                "Especialista en medicina de urgencias",
+                "Especialista en medicina del deporte",
+                "Especialista en medicina hiperbárica",
+                "Especialista en medicina intensiva",
+                "Especialista en medicina laboral",
+                "Especialista en medicina nuclear",
+                "Especialista en programas y cuidados paliativos",
+                "Especialista en trastornos del sueño",
+                "Gastroenterólogo",
+                "Ginecólogo",
+                "Hematólogo",
+                "Hepatólogo",
+                "Hospitalista",
+                "Médico de medicina familiar",
+                "Médico especialista en adolescentes",
+                "Médico especialista en geriatría",
+                "Médico especialista en medicina interna",
+                "Médico forense",
+                "Médico genético",
+                "Nefrólogo",
+                "Neonatólogo",
+                "Neumólogo",
+                "Neurólogo",
+                "Obstetra",
+                "Oftalmólogo",
+                "Oncólogo",
+                "Oncólogo ginecológico",
+                "Oncólogo radiólogo",
+                "Otorrinolaringólogo",
+                "Patólogo",
+                "Patólogo forense",
+                "Pediatra",
+                "Pediatra especialista en desarrollo",
+                "Perinatólogo",
+                "Psiquiatra",
+                "Psiquiatra especialista en adicciones",
+                "Radiólogo",
+                "Reumatólogo",
+                "Urólogo"
+            };
+            cmbCargos.ItemsSource = cargos;
+        }
         private void Volver_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
