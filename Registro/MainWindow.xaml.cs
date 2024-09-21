@@ -140,6 +140,11 @@ namespace RegistroMed
                 MessageBox.Show("El documento ingresado no es válido.", "Documento Inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            if (Funciones.Program.DocumentoExiste(int.Parse(Documento.Text)))//Verifica, si el empleados existe en la base de datos mediante el numero de documento.
+            {
+                MessageBox.Show("El empleado ingresado, ya se encuentra en la base de datos.");
+                return;
+            }
             empleado.Documento = numero;
 
             // Validar Teléfono

@@ -21,6 +21,37 @@ namespace Funciones
 
         }
 
+        public static bool DocumentoExiste(int NumeroDocumento)
+        {
+            // Variable para almacenar el resultado
+            bool existe = false;
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                // Consulta SQL para verificar si el número de documento ya existe
+                string query = "SELECT COUNT(1) FROM Empleados WHERE Documento=@Documento";
+
+                using (SqlCommand cmd = new SqlCommand(query, conexion))
+                {
+                    // Agregar el parámetro de número de documento
+                    cmd.Parameters.AddWithValue("@Documento",NumeroDocumento);
+
+                    try
+                    {
+                        // Ejecutar la consulta y obtener el resultado
+                        int count = (int)cmd.ExecuteScalar();
+                        // Si el resultado es mayor a 0, significa que ya existe el número de documento
+                        existe = count > 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejo de excepciones en caso de que ocurra un error
+                        MessageBox.Show("Error al consultar la base de datos: " + ex.Message);
+                    }
+                }
+            }
+            return existe;
+        }
+
         public static SqlConnection conexionBBDD() //Se crea la conexion a la base de datos
         {
             SqlConnection conexion = new SqlConnection("Server=DESKTOP-3MSS1LQ\\JAIFY3; Database=Hospital;" +
@@ -873,7 +904,6 @@ namespace Funciones
 
             return retorno;
         }
-
         public static void ModificarPaciente(int idPaciente, string emailPaciente, int documentoPaciente,
             string nombrePaciente, string apellidoPaciente, string telefonoPaciente, DateTime fechaingreso, DateTime fechanacimiento,
             string legajo)
@@ -975,7 +1005,6 @@ namespace Funciones
                 }
             }
         }
-
         public static void ModificarAuxiliares(Entidades.Program.EmpleadosAux Auxiliar)
         {
             using (SqlConnection conexion=conexionBBDD())
