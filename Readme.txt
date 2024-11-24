@@ -1,0 +1,1 @@
+Crear la ventana administracion y todas sus funciones y revisra parte del codigo.

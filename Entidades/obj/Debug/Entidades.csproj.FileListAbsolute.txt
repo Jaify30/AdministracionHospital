@@ -1,0 +1,14 @@
+C:\Users\josue\source\repos\Administracion\Entidades\bin\Debug\Entidades.exe.config
+C:\Users\josue\source\repos\Administracion\Entidades\bin\Debug\Entidades.exe
+C:\Users\josue\source\repos\Administracion\Entidades\bin\Debug\Entidades.pdb
+C:\Users\josue\source\repos\Administracion\Entidades\obj\Debug\Entidades.csproj.AssemblyReference.cache
+C:\Users\josue\source\repos\Administracion\Entidades\obj\Debug\Entidades.csproj.CoreCompileInputs.cache
+C:\Users\josue\source\repos\Administracion\Entidades\obj\Debug\Entidades.exe
+C:\Users\josue\source\repos\Administracion\Entidades\obj\Debug\Entidades.pdb
+D:\repos\Administracion\Entidades\bin\Debug\Entidades.exe.config
+D:\repos\Administracion\Entidades\bin\Debug\Entidades.exe
+D:\repos\Administracion\Entidades\bin\Debug\Entidades.pdb
+D:\repos\Administracion\Entidades\obj\Debug\Entidades.csproj.AssemblyReference.cache
+D:\repos\Administracion\Entidades\obj\Debug\Entidades.csproj.CoreCompileInputs.cache
+D:\repos\Administracion\Entidades\obj\Debug\Entidades.exe
+D:\repos\Administracion\Entidades\obj\Debug\Entidades.pdb

@@ -1,0 +1,219 @@
+﻿<Window x:Class="RegistroPacientes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RegistroPacientes"
+        mc:Ignorable="d"
+            AllowsTransparency="True"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    Background="Transparent"
+    Title="Registro" Height="800" Width="1000">
+
+    <Grid>
+        <Border CornerRadius="20" Background="#212529" />
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="700"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!-- Botones para cierre y apertura -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" FontFamily="Tahoma" FontSize="20" HorizontalAlignment="Center" Foreground="Beige" VerticalAlignment="Center" Margin="10,0,0,0">Ingreso de Pacientes</TextBlock>
+                <Button Grid.Column="0" FontSize="30" HorizontalAlignment="Right" Content="-" Width="30" Click="Minimize_Click" Background="Transparent" Foreground="Aqua" BorderBrush="Transparent">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border 
+                    x:Name="border"
+                    Background="Transparent"
+                    >
+
+                                <ContentPresenter 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Content="-"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D2023"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0,0,5,0" Grid.Column="1" FontSize="20" Content="X" Width="30" Click="Close_Click" Background="Transparent" Foreground="Aqua" BorderBrush="Transparent">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border 
+            x:Name="border"
+            Background="Transparent"
+            CornerRadius="0,10,0,0"
+>
+
+                                <ContentPresenter 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                Content="X"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D2023"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+
+
+            </Grid>
+
+            <!-- Datos de usuario -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese E-mail</Label>
+                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="300">
+                        <TextBox Name="EmailG" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+                    Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                    </Border>
+
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Documento</Label>
+                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="300">
+                        <TextBox Name="DocumentoG" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+                    Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                    </Border>
+
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Nombre</Label>
+                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="300">
+                        <TextBox Name="NombreG" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+                    Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                    </Border>
+
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Apellido</Label>
+                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="300">
+                        <TextBox Name="ApellidoG" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+                     Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                    </Border>
+
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Telefono</Label>
+                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="300">
+                        <TextBox Name="TelefonoG" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+                    Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                    </Border>
+
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Fecha Nacimiento</Label>
+                    <DatePicker FontSize="20" FontFamily="Tahoma" Foreground="#212529" 
+                Width="300" BorderBrush="Transparent" Height="40" 
+                Name="FechaNacimiento" 
+                SelectedDateChanged="FechaNacimiento_SelectedDateChanged" />
+                    <TextBlock Name="ErrorTextBlock" Foreground="Red" Visibility="Collapsed" FontSize="16" Margin="0,5,0,0"/>
+
+
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Fecha de Ingreso</Label>
+                    <DatePicker FontSize="20" FontFamily="Tahoma" Foreground="#212529" 
+                Width="300" BorderBrush="Transparent" Height="40" 
+                Name="FechaIngreso" 
+                SelectedDateChanged="FechaNacimiento_SelectedDateChanged" />
+                    <TextBlock Name="ErrorTextBlock1" Foreground="Red" Visibility="Collapsed" FontSize="16" Margin="0,5,0,0"/>
+
+                    <Label Margin="100,10,0,0" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Legajo</Label>
+                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="300">
+                        <TextBox Name="LegajoG" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
+                        Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                    </Border>
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" >
+                    <Label Margin="0,10,0,0" HorizontalAlignment="Center" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Historial Medico</Label>
+                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="600" Width="450">
+                        <TextBox 
+                            Name="Historial"  
+                            FontFamily="Tahoma" 
+                            FontSize="20" 
+                            Foreground="Beige" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Padding="5"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    </Border>
+
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="20" Height="40" Width="150" HorizontalAlignment="Right" Margin="0,0,10,0" Click="Button_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border 
+                        x:Name="border"
+                        Background="White"
+                        CornerRadius="5">
+
+                                <ContentPresenter 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Content="Volver"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D2023"/>
+                                    <Setter Property="Foreground" Value="Beige"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Grid.Column="1" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="20" Height="40" Width="150" Margin="10,0,0,0" HorizontalAlignment="Left" Click="Button_Click_1">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border 
+                        x:Name="border"
+                        Background="White"
+                        CornerRadius="5">
+
+                                <ContentPresenter 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Content="Registrar"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D2023"/>
+                                    <Setter Property="Foreground" Value="Beige"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</Window>
