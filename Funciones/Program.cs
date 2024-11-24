@@ -20,6 +20,7 @@ namespace Funciones
         static void Main(string[] args)
         {
 
+
         }
 
         public static bool DocumentoExiste(int NumeroDocumento)
