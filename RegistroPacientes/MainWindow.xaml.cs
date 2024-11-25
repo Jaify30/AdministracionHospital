@@ -82,7 +82,7 @@ namespace RegistroPacientes
 
             string patron1 = @"^\d{10}$";
             string patron2 = @"^\d{3}[-\s]?\d{3}[-\s]?\d{4}$";
-            string patron3 = @"^\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$";
+            string patron3 = @"^\+?\d{1,3}?[-.\s]?(?:\d{1,4})?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$";
 
             if (!Regex.IsMatch(TelefonoG.Text, patron1) && !Regex.IsMatch(TelefonoG.Text, patron2) && !Regex.IsMatch(TelefonoG.Text, patron3))
             {
