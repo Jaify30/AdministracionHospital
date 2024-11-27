@@ -23,37 +23,9 @@ namespace Funciones
 
         }
 
-        public static bool DocumentoExiste(int NumeroDocumento)
-        {
-            // Variable para almacenar el resultado
-            bool existe = false;
-            using (SqlConnection conexion = conexionBBDD())
-            {
-                // Consulta SQL para verificar si el número de documento ya existe
-                string query = "SELECT COUNT(1) FROM Empleados WHERE Documento=@Documento";
-
-                using (SqlCommand cmd = new SqlCommand(query, conexion))
-                {
-                    // Agregar el parámetro de número de documento
-                    cmd.Parameters.AddWithValue("@Documento",NumeroDocumento);
-
-                    try
-                    {
-                        // Ejecutar la consulta y obtener el resultado
-                        int count = (int)cmd.ExecuteScalar();
-                        // Si el resultado es mayor a 0, significa que ya existe el número de documento
-                        existe = count > 0;
-                    }
-                    catch (Exception ex)
-                    {
-                        // Manejo de excepciones en caso de que ocurra un error
-                        MessageBox.Show("Error al consultar la base de datos: " + ex.Message);
-                    }
-                }
-            }
-            return existe;
-        }
-        public static SqlConnection conexionBBDD() //Se crea la conexion a la base de datos
+        
+        //Conexion SQL
+        public static SqlConnection conexionBBDD()
         {
             SqlConnection conexion = new SqlConnection("Server=JAIFY\\SQLEXPRESS; Database=Hospital;" +
                 " Trusted_Connection=true; Integrated Security=SSPI;Persist Security Info=False;");
@@ -62,6 +34,7 @@ namespace Funciones
             return conexion;
         }
 
+        //Registros
         public static int RegistrarAdministrador(Entidades.Program.Administradores admin)
         {
             using (SqlConnection conexion = conexionBBDD())
@@ -88,7 +61,6 @@ namespace Funciones
                 }
             }
         }
-
         public static string ObtenerUnique_pass(int id)
         {
             string query = "SELECT Unique_pass FROM Administradores WHERE IdAdmin=@Id";
@@ -271,6 +243,37 @@ namespace Funciones
             }
             return retorno;
         }
+        //Validaciones
+        public static bool DocumentoExiste(int NumeroDocumento)
+        {
+            // Variable para almacenar el resultado
+            bool existe = false;
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                // Consulta SQL para verificar si el número de documento ya existe
+                string query = "SELECT COUNT(1) FROM Empleados WHERE Documento=@Documento";
+
+                using (SqlCommand cmd = new SqlCommand(query, conexion))
+                {
+                    // Agregar el parámetro de número de documento
+                    cmd.Parameters.AddWithValue("@Documento", NumeroDocumento);
+
+                    try
+                    {
+                        // Ejecutar la consulta y obtener el resultado
+                        int count = (int)cmd.ExecuteScalar();
+                        // Si el resultado es mayor a 0, significa que ya existe el número de documento
+                        existe = count > 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejo de excepciones en caso de que ocurra un error
+                        MessageBox.Show("Error al consultar la base de datos: " + ex.Message);
+                    }
+                }
+            }
+            return existe;
+        }
         public static bool VerificarFecha(DateTime? fecha, string nombreCampo)
         {
             // Verifica si la fecha ha sido seleccionada
@@ -431,6 +434,8 @@ namespace Funciones
                 return retorno;
             }
         }
+
+        //Mostrar datos
         public static Empleados ObtenerDatosEmpleadoPorEmail(string email)
         {
             Empleados empleado = null;
@@ -829,6 +834,8 @@ namespace Funciones
             }
             return doctorBuscado;
         }
+
+        //Eliminar
         public static void EliminarDoctor(int idEmpleado)
         {
 
@@ -914,6 +921,8 @@ namespace Funciones
                 }
             }
         }
+
+        //Actualizaciones o Modificaciones
         public static int ActualizarHistorialPaciente(int idPaciente, string nuevoHistorial)
         {
             int retorno = 0;
@@ -1104,5 +1113,235 @@ namespace Funciones
                 }
             }
         }
+
+        //Ordenamientos
+        public static List<Empleados> ObtenerEmpleadosOrdenados(string columnaOrden)
+        {
+            List<Empleados> empleados = new List<Empleados>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                // Usamos parámetro para especificar la columna de orden
+                string query = $"SELECT * FROM Empleados ORDER BY {columnaOrden}";
+
+                SqlCommand command = new SqlCommand(query, conexion);
+
+                try
+                {
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Empleados empleado = new Empleados
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Password = reader.GetString(3),
+                            Email = reader.GetString(4),
+                            Nacionalidad = reader.GetString(5),
+                            FechaNacimiento = reader.GetDateTime(6),
+                            FechaIngreso = reader.GetDateTime(7),
+                            Telefono = reader.GetString(8),
+                            Domicilio = reader.GetString(9),
+                            Localidad = reader.GetString(10),
+                            Documento = reader.GetInt32(11)
+                        };
+
+                        empleados.Add(empleado);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+
+            return empleados;
+        }
+        public static List<Doctores> ObtenerDoctoresOrdenados(string columnaOrden)
+        {
+            List<Doctores> doctores = new List<Doctores>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                
+                string query = $@"
+                SELECT 
+                    e.Id,
+                    e.Nombre,
+                    e.Apellido,
+                    e.Email,
+                    e.Nacionalidad,
+                    e.FechaNacimiento,
+                    e.FechaIngreso,
+                    e.Telefono,
+                    e.Domicilio,
+                    e.Localidad,
+                    e.Documento,
+                    e.Password,
+                    d.Cargo,
+                    d.Matricula
+                FROM Empleados e
+                INNER JOIN Doctores d ON e.Id = d.IdDoctor
+                ORDER BY e.{columnaOrden}";
+
+                SqlCommand command = new SqlCommand(query, conexion);
+
+                try
+                {
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Doctores doctor = new Doctores
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Email = reader.GetString(3),
+                            Nacionalidad = reader.GetString(4),
+                            FechaNacimiento = reader.GetDateTime(5),
+                            FechaIngreso = reader.GetDateTime(6),
+                            Telefono = reader.GetString(7),
+                            Domicilio = reader.GetString(8),
+                            Localidad = reader.GetString(9),
+                            Documento = reader.GetInt32(10),
+                            Password = reader.GetString(11),
+                            Cargo = reader.GetString(12),
+                            Matricula = reader.GetString(13)
+                        };
+
+                        doctores.Add(doctor);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+            return doctores;
+        }
+        public static List<EmpleadosAux> ObtenerAuxiliaresOrdenados(string columnaOrden)
+        {
+            List<EmpleadosAux> auxiliares = new List<EmpleadosAux>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                string query = $@"
+        SELECT 
+            e.Id,
+            e.Nombre,
+            e.Apellido,
+            e.Email,
+            e.Nacionalidad,
+            e.FechaNacimiento,
+            e.FechaIngreso,
+            e.Telefono,
+            e.Domicilio,
+            e.Localidad,
+            e.Documento,
+            e.Password,
+            d.Cargo
+        FROM Empleados e
+        INNER JOIN EmpleadosAux d ON e.Id = d.IdEmpleado
+        ORDER BY {columnaOrden}";
+
+                SqlCommand command = new SqlCommand(query, conexion);
+
+                try
+                {
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        EmpleadosAux auxiliar = new EmpleadosAux
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Email = reader.GetString(3),
+                            Nacionalidad = reader.GetString(4),
+                            FechaNacimiento = reader.GetDateTime(5),
+                            FechaIngreso = reader.GetDateTime(6),
+                            Telefono = reader.GetString(7),
+                            Domicilio = reader.GetString(8),
+                            Localidad = reader.GetString(9),
+                            Documento = reader.GetInt32(10),
+                            Password = reader.GetString(11),
+                            Cargo = reader.GetString(12)
+                        };
+
+                        auxiliares.Add(auxiliar);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+
+            return auxiliares;
+        }
+        public static List<Pacientes> MostrarPacientesOrdenados(int idDoctor, string columnaOrden)
+        {
+            List<Pacientes> pacientes = new List<Pacientes>();
+
+            using (SqlConnection conexion = conexionBBDD())
+            {
+                
+                string query = $@"
+                SELECT * 
+                FROM Pacientes 
+                WHERE IdDoctor = @IdDoctor
+                ORDER BY {columnaOrden}";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+
+                cmd.Parameters.AddWithValue("@IdDoctor", idDoctor);
+
+                try
+                {
+                    
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Pacientes paciente = new Pacientes
+                            {
+                                IdPacientes = Convert.ToInt32(reader["IdPacientes"]),
+                                Email = reader["Email"].ToString(),
+                                Documento = Convert.ToInt32(reader["Documento"]),
+                                Nombre = reader["Nombre"].ToString(),
+                                Apellido = reader["Apellido"].ToString(),
+                                Telefono = reader["Telefono"].ToString(),
+                                Legajo = reader["Legajo"].ToString(),
+                                FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]),
+                                FechaNacimiento = Convert.ToDateTime(reader["FechaNacimiento"]),
+                                IdDoctor = Convert.ToInt32(reader["IdDoctor"]),
+                                Historial = reader["Historial"].ToString()
+                            };
+                            pacientes.Add(paciente);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Ha ocurrido un error: " + e.Message);
+                }
+            }
+            return pacientes;
+        }
+
     }
 }

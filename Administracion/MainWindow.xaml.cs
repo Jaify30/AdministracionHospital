@@ -68,6 +68,8 @@ namespace Administracion
         {
             this.Close();
         }
+
+        //Mostrar lista de models
         private void Mostrar_Empleados_Click(object sender, RoutedEventArgs e)
         {
             Data_Pacientes.Visibility = Visibility.Hidden;
@@ -77,16 +79,31 @@ namespace Administracion
 
             List<Entidades.Program.Empleados> empleados = Funciones.Program.ObtenerTodosLosEmpleados();
 
+            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
+
             if (empleados == null || !empleados.Any())
             {
                 MessageBox.Show("No se han encontrado empleados.");
                 return;
             }
-
-            Data_Empleados.ItemsSource = empleados;
+            if (indice_seleccionado == 1)
+            {
+                List<Entidades.Program.Empleados> empleadosOrdenadosPorNombre = Funciones.Program.ObtenerEmpleadosOrdenados("Nombre");
+                Data_Empleados.ItemsSource = empleadosOrdenadosPorNombre;
+            }
+            else if (indice_seleccionado == 2)
+            {
+                List<Entidades.Program.Empleados> empleadosOrdenadosPorApellido = Funciones.Program.ObtenerEmpleadosOrdenados("Apellido");
+                Data_Empleados.ItemsSource = empleadosOrdenadosPorApellido;
+            }
+            else
+            {
+                Data_Empleados.ItemsSource = empleados; // Por defecto, no ordenado
+            }
             Data_Empleados.Visibility = Visibility.Visible;
             Eliminar.Visibility = Visibility.Hidden;
             Modificar.Visibility = Visibility.Hidden;
+
 
         }
         private void MostrarContraseña_Click(object sender, RoutedEventArgs e)
@@ -110,13 +127,28 @@ namespace Administracion
 
             List<Doctores> doctores = Funciones.Program.ObtenerDoctores();
 
+            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
+
             if (doctores == null || !doctores.Any())
             {
                 MessageBox.Show("No se han encontrado empleados.");
                 return;
             }
+            if (indice_seleccionado == 1)
+            {
+                List<Entidades.Program.Doctores> doctoresOrdenadosPorNombre = Funciones.Program.ObtenerDoctoresOrdenados("Nombre");
+                Data_Doctores.ItemsSource = doctoresOrdenadosPorNombre;
+            }
+            else if (indice_seleccionado == 2)
+            {
+                List<Entidades.Program.Doctores> doctoresOrdenadosPorApellido = Funciones.Program.ObtenerDoctoresOrdenados("Apellido");
+                Data_Doctores.ItemsSource = doctoresOrdenadosPorApellido;
+            }
+            else
+            {
+                Data_Doctores.ItemsSource = doctores; // Por defecto, no ordenado
+            }
 
-            Data_Doctores.ItemsSource = doctores;
             Data_Doctores.Visibility = Visibility.Visible;
             Eliminar.Visibility = Visibility.Visible;
             Modificar.Visibility = Visibility.Visible;
@@ -133,6 +165,7 @@ namespace Administracion
 
             // Obtener la lista de auxiliares
             List<EmpleadosAux> auxiliar = Funciones.Program.ObtenerAuxiliares();
+            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
 
             // Verificar si la lista contiene datos
             if (auxiliar == null || !auxiliar.Any())
@@ -140,9 +173,21 @@ namespace Administracion
                 MessageBox.Show("No se han encontrado empleados auxiliares.");
                 return;
             }
+            if (indice_seleccionado == 1)
+            {
+                List<Entidades.Program.EmpleadosAux> auxiliarOrdenadosPorNombre = Funciones.Program.ObtenerAuxiliaresOrdenados("e.Nombre");
+                Data_Auxiliares.ItemsSource = auxiliarOrdenadosPorNombre;
+            }
+            else if (indice_seleccionado == 2)
+            {
+                List<Entidades.Program.EmpleadosAux> auxiliarOrdenadosPorApellido = Funciones.Program.ObtenerAuxiliaresOrdenados("e.Apellido");
+                Data_Auxiliares.ItemsSource = auxiliarOrdenadosPorApellido;
+            }
+            else
+            {
+                Data_Auxiliares.ItemsSource = auxiliar; // Por defecto, no ordenado
+            }
 
-            // Asignar la lista al DataGrid
-            Data_Auxiliares.ItemsSource = auxiliar;
 
             // Hacer visible el DataGrid
             Data_Auxiliares.Visibility = Visibility.Visible;
@@ -159,19 +204,32 @@ namespace Administracion
             Data_Pacientes.HeadersVisibility = DataGridHeadersVisibility.All;
 
             List<Pacientes> pacientes = Funciones.Program.MostrarPacientes(empleados.Id);
-
+            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
             if (pacientes == null || !pacientes.Any())
             {
                 MessageBox.Show("No se han encontrado Pacientes.");
                 return;
             }
-
-            Data_Pacientes.ItemsSource = pacientes;
+            if (indice_seleccionado == 1)
+            {
+                List<Entidades.Program.Pacientes> pacientesOrdenadosPorNombre = Funciones.Program.MostrarPacientesOrdenados(empleados.Id,"Nombre");
+                Data_Pacientes.ItemsSource = pacientesOrdenadosPorNombre;
+            }
+            else if (indice_seleccionado == 2)
+            {
+                List<Entidades.Program.Pacientes> pacientesOrdenadosPorApellido = Funciones.Program.MostrarPacientesOrdenados(empleados.Id,"Apellido");
+                Data_Pacientes.ItemsSource = pacientesOrdenadosPorApellido;
+            }
+            else
+            {
+                Data_Pacientes.ItemsSource = pacientes; // Por defecto, no ordenado
+            }
 
             Data_Pacientes.Visibility= Visibility.Visible;
             Eliminar.Visibility = Visibility.Visible;
             Modificar.Visibility = Visibility.Visible;
         }
+        //Modificar, eliminar y agregar
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
             if (Data_Doctores.SelectedItem is Doctores doctorSeleccionado)
@@ -373,5 +431,7 @@ namespace Administracion
                 }
             }
         }
+        
     }
+
 }

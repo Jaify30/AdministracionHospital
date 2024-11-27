@@ -160,10 +160,10 @@
                         </DockPanel>
                         
                         <Label Margin="0,20,0,0" Name="TextDoctor" HorizontalAlignment="Center" FontFamily="Tahoma" FontSize="20" Foreground="Beige">Ingrese Documento del Doctor</Label>
-                        <DockPanel>
+                        <DockPanel Margin="0,0,0,20">
                             <Border Name="DocumentoDoctorBorder" Margin="20,0,0,0" BorderBrush="White" BorderThickness="1" CornerRadius="10" Height="40" Width="200">
                                 <TextBox Name="DocumentoDoctor" VerticalContentAlignment="Center" FontFamily="Tahoma" FontSize="20" 
-        Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
+                                Foreground="Beige" Background="Transparent" BorderThickness="0" Padding="5"/>
                             </Border>
                             <Button Name="Buscar_Doctor" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="50" HorizontalAlignment="Center" Click="Buscar_Doctor_Click">
                                 <Button.Template>
@@ -188,13 +188,29 @@
                                 </Button.Template>
                             </Button>
                         </DockPanel>
+
+                        <ComboBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  FontFamily="Tahoma" FontSize="15" x:Name="cmbOrdenamiento" 
+                        Width="200"
+                        Height="40"
+                        BorderThickness="1"
+                        BorderBrush="White"
+                        Margin="2" 
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        SelectedIndex="0"
+                        
+                        >
+                            <ComboBoxItem IsEnabled="False" Content="Ordenar por..." />
+                            <ComboBoxItem Content="Ordenar por Nombre" />
+                            <ComboBoxItem Content="Ordenar  por Apellido"/>
+                        </ComboBox>
                     </StackPanel>
                     
                     
                     
 
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
-                        <Button Margin="0,50,0,0" Name="Mostrar_Empleados" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Mostrar_Empleados_Click">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0">
+                        <Button Margin="0,20,0,0" Name="Mostrar_Empleados" Grid.Column="0" BorderBrush="Transparent" FontFamily="Tahoma" FontSize="17" Height="40" Width="150" HorizontalAlignment="Center" Click="Mostrar_Empleados_Click">
                             <Button.Template>
                                 <ControlTemplate>
                                     <Border 
