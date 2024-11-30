@@ -29,11 +29,11 @@ namespace Entidades
             public string Domicilio { get; set; }
             public string Localidad { get; set; }
             public int Documento { get; set; }
-
+            public bool inhibido {  get; set; }
             public Empleados() { }
 
             public Empleados(int Id, string Nombre,string Apellido, string Password,string Email, string Nacionalidad, DateTime FechaNacimiento,DateTime FechaIngreso,
-                string Telefono, string Domicilio, string Localidad, int Documento)
+                string Telefono, string Domicilio, string Localidad, int Documento, bool inhibido)
             {
                 this.Id = Id;
                 this.Nombre = Nombre;
@@ -47,6 +47,7 @@ namespace Entidades
                 this.Domicilio = Domicilio;
                 this.Localidad = Localidad;
                 this.Documento = Documento;
+                this.inhibido = inhibido;
             }
         }
 
@@ -57,9 +58,9 @@ namespace Entidades
             public EmpleadosAux() : base() { }
 
             public EmpleadosAux(int Id, string Nombre, string Apellido, string Password, string Email, string Nacionalidad, DateTime FechaNacimiento, DateTime FechaIngreso,
-                 string Telefono, string Domicilio, string Localidad, int Documento, string Cargo) : base(Id, Nombre, Apellido,
+                 string Telefono, string Domicilio, string Localidad, int Documento, string Cargo, bool inhibido) : base(Id, Nombre, Apellido,
                     Password,Email,Nacionalidad, FechaNacimiento, FechaIngreso,
-                    Telefono, Domicilio, Localidad, Documento)
+                    Telefono, Domicilio, Localidad, Documento, inhibido)
             {
                 this.Cargo = Cargo;
             }
@@ -74,14 +75,13 @@ namespace Entidades
             public Administradores() : base() { }
 
             public Administradores(int Id, string Nombre, string Apellido, string Password, string Email, string Nacionalidad, DateTime FechaNacimiento, DateTime FechaIngreso,
-                string Telefono, string Domicilio, string Localidad, int Documento, DateTime FechaAsignacion, string Unique_Pass) : base(Id,Nombre,Apellido,Password,Email,Nacionalidad,FechaNacimiento,FechaIngreso
-                    ,Telefono,Domicilio,Localidad,Documento)
+                string Telefono, string Domicilio, string Localidad, int Documento, DateTime FechaAsignacion, string Unique_Pass,bool inhibido) : base(Id,Nombre,Apellido,Password,Email,Nacionalidad,FechaNacimiento,FechaIngreso
+                    ,Telefono,Domicilio,Localidad,Documento, inhibido)
             {
                 this.FechaAsignacion = FechaAsignacion;
                 this.Unique_pass = Unique_pass;
             }
         }
-
 
         public class Doctores : Empleados
         {
@@ -91,9 +91,9 @@ namespace Entidades
             public Doctores() : base() { }
 
             public Doctores(int Id, string Nombre, string Apellido, string Password, string Email, string Nacionalidad, DateTime FechaNacimiento, DateTime FechaIngreso,
-                string Telefono, string Domicilio, string Localidad, int Documento, string Cargo, string Matricula) : base(Id, Nombre, Apellido,
+                string Telefono, string Domicilio, string Localidad, int Documento, string Cargo, string Matricula, bool inhibido) : base(Id, Nombre, Apellido,
                     Password, Email, Nacionalidad, FechaNacimiento, FechaIngreso,
-                    Telefono, Domicilio, Localidad, Documento)
+                    Telefono, Domicilio, Localidad, Documento, inhibido)
             {
                 this.Cargo = Cargo;
                 this.Matricula = Matricula;
@@ -113,10 +113,11 @@ namespace Entidades
             public DateTime FechaIngreso {  get; set; }
             public int IdDoctor { get; set; }
             public string Historial { get; set; }
+            public bool inhibido {  get; set; }
 
             public Pacientes() { }
             public Pacientes(int IdPacientes, string Email, int Documento, string Nombre, string Apellido, string Telefono, string Legajo, DateTime FechaNacimiento,
-                DateTime FechaIngreso, int IdDoctor, string Historial)
+                DateTime FechaIngreso, int IdDoctor, string Historial, bool inhibido)
             {
                 this.IdPacientes = IdPacientes;
                 this.Email = Email;
@@ -129,6 +130,7 @@ namespace Entidades
                 this.FechaNacimiento = FechaNacimiento;
                 this.IdDoctor = IdDoctor;
                 this.Historial = Historial;
+                this.inhibido = inhibido;
             }
         }
 

@@ -20,7 +20,6 @@ namespace Funciones
         static void Main(string[] args)
         {
 
-
         }
 
         
@@ -63,7 +62,7 @@ namespace Funciones
         }
         public static string ObtenerUnique_pass(int id)
         {
-            string query = "SELECT Unique_pass FROM Administradores WHERE IdAdmin=@Id";
+            string query = "SELECT Unique_pass FROM Administradores WHERE IdAdmin=@Id AND ";
 
             using (SqlConnection conexion= conexionBBDD())
             {
@@ -500,7 +499,7 @@ namespace Funciones
 
             using (SqlConnection conexion = conexionBBDD())
             {
-                string query = "SELECT * FROM Empleados";
+                string query = "SELECT * FROM Empleados WHERE inhibido = 0;";
 
                 SqlCommand command = new SqlCommand(query, conexion);
 
@@ -562,7 +561,7 @@ namespace Funciones
                             d.Cargo,
                             d.Matricula
                         FROM Empleados e
-                        INNER JOIN Doctores d ON e.Id = d.IdDoctor";
+                        INNER JOIN Doctores d ON e.Id = d.IdDoctor WHERE e.inhibido = 0;";
 
                 SqlCommand command = new SqlCommand(query, conexion);
 
@@ -624,7 +623,7 @@ namespace Funciones
                     e.Password,
                     d.Cargo
                 FROM Empleados e
-                INNER JOIN EmpleadosAux d ON e.Id = d.IdEmpleado";
+                INNER JOIN EmpleadosAux d ON e.Id = d.IdEmpleado AND e.inhibido = 0;";
 
                 SqlCommand command = new SqlCommand(query, conexion);
 
@@ -673,7 +672,7 @@ namespace Funciones
                             d.Matricula
                          FROM Empleados e
                          INNER JOIN Doctores d ON e.Id = d.IdDoctor
-                         WHERE e.Email = @Email";
+                         WHERE e.Email = @Email ";
 
                 SqlCommand cmd = new SqlCommand(query, conexion);
                 cmd.Parameters.AddWithValue("@Email", Email);
@@ -701,7 +700,7 @@ namespace Funciones
 
             using (SqlConnection conexion = conexionBBDD())
             {
-                string query = @"SELECT * FROM Pacientes WHERE IdDoctor = @IdDoctor";
+                string query = @"SELECT * FROM Pacientes WHERE IdDoctor = @IdDoctor AND inhibido = 0;";
 
                 SqlCommand cmd = new SqlCommand(query, conexion);
                 
@@ -737,7 +736,7 @@ namespace Funciones
 
             using (SqlConnection conexion = conexionBBDD())
             {
-                string query = @"SELECT * FROM Pacientes WHERE Documento=@documento AND IdDoctor=@idDoctor ";
+                string query = @"SELECT * FROM Pacientes WHERE Documento=@documento AND IdDoctor=@idDoctor AND inhibido = 0;";
                 
                 SqlCommand cmd = new SqlCommand(query, conexion);
 
@@ -792,7 +791,7 @@ namespace Funciones
                         d.Matricula
                     FROM Empleados e
                     INNER JOIN Doctores d ON e.Id = d.IdDoctor
-                    WHERE e.Documento = @Documento;";
+                    WHERE e.Documento = @Documento AND inhibido = 0;";
 
                 SqlCommand command = new SqlCommand(query, conexion);
 
@@ -846,12 +845,12 @@ namespace Funciones
                 try
                 {
                     // Eliminar de Doctores
-                    SqlCommand EliminarDoctores = new SqlCommand("DELETE FROM Doctores WHERE IdDoctor = @Id", conexion, transaction);
+                    SqlCommand EliminarDoctores = new SqlCommand("UPDATE Doctores SET inhibido = 1 WHERE IdDoctor = @Id", conexion, transaction);
                     EliminarDoctores.Parameters.AddWithValue("@Id", idEmpleado);
                     EliminarDoctores.ExecuteNonQuery();
 
                     // Eliminar de Empleados
-                    SqlCommand deleteEmpleadosCommand = new SqlCommand("DELETE FROM Empleados WHERE Id = @Id", conexion, transaction);
+                    SqlCommand deleteEmpleadosCommand = new SqlCommand("UPDATE Empleados SET inhibido = 1 WHERE Id = @Id", conexion, transaction);
                     deleteEmpleadosCommand.Parameters.AddWithValue("@Id", idEmpleado);
                     deleteEmpleadosCommand.ExecuteNonQuery();
 
@@ -877,12 +876,12 @@ namespace Funciones
                 try
                 {
                     // Eliminar de Auxiliar
-                    SqlCommand deleteAuxiliaresCommand = new SqlCommand("DELETE FROM EmpleadosAux WHERE IdEmpleado = @Id", conexion, sqlTransaction);
+                    SqlCommand deleteAuxiliaresCommand = new SqlCommand("UPDATE EmpleadosAux SET inhibido = 1 WHERE IdEmpleado = @Id", conexion, sqlTransaction);
                     deleteAuxiliaresCommand.Parameters.AddWithValue("@Id", idAuxiliar);
                     deleteAuxiliaresCommand.ExecuteNonQuery();
 
                     // Eliminar de Empleados
-                    SqlCommand deleteEmpleadosCommand = new SqlCommand("DELETE FROM Empleados WHERE Id = @Id", conexion, sqlTransaction);
+                    SqlCommand deleteEmpleadosCommand = new SqlCommand("UPDATE Empleados SET inhibido = 1 WHERE Id = @Id", conexion, sqlTransaction);
                     deleteEmpleadosCommand.Parameters.AddWithValue("@Id", idAuxiliar);
                     deleteEmpleadosCommand.ExecuteNonQuery();
 
@@ -906,7 +905,7 @@ namespace Funciones
                 try
                 { 
                     // Eliminar de Empleados
-                    SqlCommand deletePacienteCommand = new SqlCommand("DELETE FROM Pacientes WHERE IdPacientes = @Id", conexion, sqlTransaction);
+                    SqlCommand deletePacienteCommand = new SqlCommand("UPDATE Pacientes SET inhibido = 1 WHERE IdPacientes = @Id", conexion, sqlTransaction);
                     deletePacienteCommand.Parameters.AddWithValue("@Id", idPaciente);
                     deletePacienteCommand.ExecuteNonQuery();
 
