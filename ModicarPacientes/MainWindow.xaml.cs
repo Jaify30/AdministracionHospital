@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Entidades.Program;
 
 namespace ModicarPacientes
 {
@@ -51,26 +52,70 @@ namespace ModicarPacientes
 
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult resultado = MessageBox.Show("¿Está seguro de que desea modificar los datos del paciente?",
-           "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            
+            MessageBoxResult resultado = MessageBox.Show(
+                "¿Está seguro de que desea modificar los datos del paciente?",
+                "Confirmación",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question
+            );
 
-            if (resultado == MessageBoxResult.Yes)
+            if (resultado != MessageBoxResult.Yes) return;
+
+            string[] camposObligatorios = { EmailG.Text,DocumentoG.Text,NombreG.Text,ApellidoG.Text,TelefonoG.Text,FechaNacimiento.Text,FechaIngreso.Text,LegajoG.Text};
+
+            if (Funciones.Program.CamposVacios(camposObligatorios))
             {
-                if (string.IsNullOrEmpty(EmailG.Text) || string.IsNullOrEmpty(DocumentoG.Text) || string.IsNullOrEmpty(NombreG.Text) || string.IsNullOrEmpty(ApellidoG.Text)
-                    || string.IsNullOrEmpty(TelefonoG.Text) || string.IsNullOrEmpty(FechaIngreso.Text) || string.IsNullOrEmpty(FechaNacimiento.Text) || string.IsNullOrEmpty(LegajoG.Text))
-                {
-                    MessageBox.Show("No puede dejar ningun campo en blanco...","ATENCION");
-                    return;
-                }
-                else
-                {
-                    Funciones.Program.ModificarPaciente(idPaciente, EmailG.Text, int.Parse(DocumentoG.Text), NombreG.Text, ApellidoG.Text, TelefonoG.Text, FechaIngreso.SelectedDate.Value, FechaNacimiento.SelectedDate.Value, LegajoG.Text);
-                    MessageBox.Show("Paciente modificado correctamente.");
-                }
-                
+                MessageBox.Show("No puede dejar ningún campo en blanco...", "ATENCIÓN");
+                return;
             }
 
+            if (!Funciones.Program.ValidarEmail(EmailG.Text))
+            {
+                Funciones.Program.MostrarError("Por favor, ingrese un email válido.", "Email Inválido");
+                return;
+            }
+            if (!Funciones.Program.ValidarSoloNumeros(DocumentoG.Text, out int numero, "Documento"))
+            {
+                Funciones.Program.MostrarError("El documento ingresado no es válido.", "Documento Inválido");
+                return;
+            }
+            if (!Funciones.Program.ValidarTelefono(TelefonoG.Text))
+            {
+                Funciones.Program.MostrarError("Por favor, ingrese un número de teléfono válido.", "Teléfono Inválido");
+                return;
+            }
+            if (!Funciones.Program.VerificarFecha(FechaIngreso.SelectedDate, "Ingreso") ||
+                !Funciones.Program.VerificarFecha(FechaNacimiento.SelectedDate, "Nacimiento"))
+            {
+                return;
+            }
+            if (NombreG.Text.Length < 1 || NombreG.Text.Length > 50)
+            {
+                MessageBox.Show("Ingrese entre 1 a 50 caracteres en Nombre.");
+                return ;
+            }
+            if (ApellidoG.Text.Length < 1 || ApellidoG.Text.Length > 50)
+            {
+                MessageBox.Show("Ingrese entre 1 a 50 caracteres en Apellido.");
+                return;
+            }
+            if (LegajoG.Text.Length < 1 || LegajoG.Text.Length > 10)
+            {
+                MessageBox.Show("Ingrese entre 1 a 10 caracteres en Legajo.");
+                return;
+            }
+            if (NombreG.Text.Length < 1 || NombreG.Text.Length > 8)
+            {
+                MessageBox.Show("Ingrese un documento valido.");
+                return;
+            }
+
+            Funciones.Program.ModificarPaciente(idPaciente,EmailG.Text,int.Parse(DocumentoG.Text),NombreG.Text,ApellidoG.Text,TelefonoG.Text,DateTime.Parse(FechaIngreso.Text),DateTime.Parse(FechaNacimiento.Text),LegajoG.Text);
+            MessageBox.Show("Paciente modificado correctamente.");
+
         }
+
         private void FechaIngreso_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!FechaIngreso.SelectedDate.HasValue)
