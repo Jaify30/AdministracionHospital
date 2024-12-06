@@ -30,7 +30,7 @@
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" FontFamily="Tahoma" FontSize="20" HorizontalAlignment="Center" Foreground="Beige" VerticalAlignment="Center" Margin="10,0,0,0">Modificar Doctor</TextBlock>
+                <TextBlock Grid.Column="0" FontFamily="Tahoma" FontSize="20" HorizontalAlignment="Center" Foreground="Beige" VerticalAlignment="Center" Margin="10,0,0,0">Modificar Auxiliar</TextBlock>
                 <Button Grid.Column="0" FontSize="30" HorizontalAlignment="Right" Content="-" Width="30" Click="Minimize_Click" Background="Transparent" Foreground="Aqua" BorderBrush="Transparent">
                     <Button.Template>
                         <ControlTemplate>

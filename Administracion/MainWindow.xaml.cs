@@ -79,22 +79,12 @@ namespace Administracion
 
             List<Entidades.Program.Empleados> empleados = Funciones.Program.ObtenerTodosLosEmpleados();
 
-            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
+            
 
             if (empleados == null || !empleados.Any())
             {
                 MessageBox.Show("No se han encontrado empleados.");
                 return;
-            }
-            if (indice_seleccionado == 1)
-            {
-                List<Entidades.Program.Empleados> empleadosOrdenadosPorNombre = Funciones.Program.ObtenerEmpleadosOrdenados("Nombre");
-                Data_Empleados.ItemsSource = empleadosOrdenadosPorNombre;
-            }
-            else if (indice_seleccionado == 2)
-            {
-                List<Entidades.Program.Empleados> empleadosOrdenadosPorApellido = Funciones.Program.ObtenerEmpleadosOrdenados("Apellido");
-                Data_Empleados.ItemsSource = empleadosOrdenadosPorApellido;
             }
             else
             {
@@ -127,22 +117,12 @@ namespace Administracion
 
             List<Doctores> doctores = Funciones.Program.ObtenerDoctores();
 
-            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
+           
 
             if (doctores == null || !doctores.Any())
             {
                 MessageBox.Show("No se han encontrado empleados.");
                 return;
-            }
-            if (indice_seleccionado == 1)
-            {
-                List<Entidades.Program.Doctores> doctoresOrdenadosPorNombre = Funciones.Program.ObtenerDoctoresOrdenados("Nombre");
-                Data_Doctores.ItemsSource = doctoresOrdenadosPorNombre;
-            }
-            else if (indice_seleccionado == 2)
-            {
-                List<Entidades.Program.Doctores> doctoresOrdenadosPorApellido = Funciones.Program.ObtenerDoctoresOrdenados("Apellido");
-                Data_Doctores.ItemsSource = doctoresOrdenadosPorApellido;
             }
             else
             {
@@ -165,23 +145,13 @@ namespace Administracion
 
             // Obtener la lista de auxiliares
             List<EmpleadosAux> auxiliar = Funciones.Program.ObtenerAuxiliares();
-            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
+            
 
             // Verificar si la lista contiene datos
             if (auxiliar == null || !auxiliar.Any())
             {
                 MessageBox.Show("No se han encontrado empleados auxiliares.");
                 return;
-            }
-            if (indice_seleccionado == 1)
-            {
-                List<Entidades.Program.EmpleadosAux> auxiliarOrdenadosPorNombre = Funciones.Program.ObtenerAuxiliaresOrdenados("e.Nombre");
-                Data_Auxiliares.ItemsSource = auxiliarOrdenadosPorNombre;
-            }
-            else if (indice_seleccionado == 2)
-            {
-                List<Entidades.Program.EmpleadosAux> auxiliarOrdenadosPorApellido = Funciones.Program.ObtenerAuxiliaresOrdenados("e.Apellido");
-                Data_Auxiliares.ItemsSource = auxiliarOrdenadosPorApellido;
             }
             else
             {
@@ -204,21 +174,11 @@ namespace Administracion
             Data_Pacientes.HeadersVisibility = DataGridHeadersVisibility.All;
 
             List<Pacientes> pacientes = Funciones.Program.MostrarPacientes(empleados.Id);
-            int indice_seleccionado = cmbOrdenamiento.SelectedIndex;
+            
             if (pacientes == null || !pacientes.Any())
             {
                 MessageBox.Show("No se han encontrado Pacientes.");
                 return;
-            }
-            if (indice_seleccionado == 1)
-            {
-                List<Entidades.Program.Pacientes> pacientesOrdenadosPorNombre = Funciones.Program.MostrarPacientesOrdenados(empleados.Id,"Nombre");
-                Data_Pacientes.ItemsSource = pacientesOrdenadosPorNombre;
-            }
-            else if (indice_seleccionado == 2)
-            {
-                List<Entidades.Program.Pacientes> pacientesOrdenadosPorApellido = Funciones.Program.MostrarPacientesOrdenados(empleados.Id,"Apellido");
-                Data_Pacientes.ItemsSource = pacientesOrdenadosPorApellido;
             }
             else
             {
@@ -240,11 +200,11 @@ namespace Administracion
                 }
                 else
                 {
-                    ModificarDoctores.MainWindow Doctores = new ModificarDoctores.MainWindow(doctorSeleccionado);
-                    Doctores.ShowDialog();
+                    ModificarDoctores.MainWindow doctores = new ModificarDoctores.MainWindow(doctorSeleccionado);
+                    doctores.ShowDialog();
                 }
             }
-            if (Data_Pacientes.SelectedItem is Pacientes pacienteSeleccionado)
+            else if (Data_Pacientes.SelectedItem is Pacientes pacienteSeleccionado)
             {
                 if (pacienteSeleccionado == null || pacienteSeleccionado.IdPacientes == null)
                 {
@@ -252,11 +212,11 @@ namespace Administracion
                 }
                 else
                 {
-                    ModicarPacientes.MainWindow Paciente = new ModicarPacientes.MainWindow(pacienteSeleccionado);
-                    Paciente.ShowDialog();
+                    ModicarPacientes.MainWindow paciente = new ModicarPacientes.MainWindow(pacienteSeleccionado);
+                    paciente.ShowDialog();
                 }
             }
-            if (Data_Auxiliares.SelectedItem is EmpleadosAux auxiliarSeleccionado)
+            else if (Data_Auxiliares.SelectedItem is EmpleadosAux auxiliarSeleccionado)
             {
                 if (auxiliarSeleccionado == null || auxiliarSeleccionado.Id == null)
                 {
@@ -264,16 +224,16 @@ namespace Administracion
                 }
                 else
                 {
-                    ModificarAuxiliares.MainWindow modificarAuxiliares =  new ModificarAuxiliares.MainWindow(auxiliarSeleccionado);
+                    ModificarAuxiliares.MainWindow modificarAuxiliares = new ModificarAuxiliares.MainWindow(auxiliarSeleccionado);
                     modificarAuxiliares.ShowDialog();
                 }
-
             }
             else
             {
                 MessageBox.Show("Seleccione una casilla para Modificar");
             }
         }
+
         private void Eliminar_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este registro?",

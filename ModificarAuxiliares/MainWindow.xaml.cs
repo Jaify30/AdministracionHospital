@@ -56,6 +56,7 @@ namespace ModificarAuxiliares
                 "Contadores",
                 "Administrativo",
                 "Tecnicos",
+                "Recursos Humanos",
                 "Otros"
             };
             cmbCargos.ItemsSource = cargos;
@@ -77,36 +78,69 @@ namespace ModificarAuxiliares
             MessageBoxResult resultado = MessageBox.Show("¿Está seguro de que desea modificar los datos del paciente?",
           "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            if (resultado == MessageBoxResult.Yes)
+            if (resultado != MessageBoxResult.Yes) return;
+
+            string[] camposObligatorios = {EmailG.Text, DocumentoG.Text, NombreG.Text, ApellidoG.Text, TelefonoG.Text, FechaIngreso.Text,
+                                     NacionalidadG.Text, Domicilio.Text, Localidad.Text, cmbCargos.Text, FechaNacimiento.Text};
+            if (Funciones.Program.CamposVacios(camposObligatorios))
             {
-                if (string.IsNullOrWhiteSpace(EmailG.Text) || string.IsNullOrWhiteSpace(DocumentoG.Text) || string.IsNullOrWhiteSpace(NombreG.Text) || string.IsNullOrWhiteSpace(ApellidoG.Text)
-                    || string.IsNullOrWhiteSpace(TelefonoG.Text) || string.IsNullOrWhiteSpace(FechaIngreso.Text) || string.IsNullOrWhiteSpace(NacionalidadG.Text) || string.IsNullOrWhiteSpace(Domicilio.Text)
-                    || string.IsNullOrWhiteSpace(Localidad.Text) || string.IsNullOrWhiteSpace(cmbCargos.Text) || string.IsNullOrWhiteSpace(FechaNacimiento.Text))
+                MessageBox.Show("No puede dejar ningún campo en blanco...", "ATENCIÓN");
+                return;
+            }
+            if (!Funciones.Program.ValidarEmail(EmailG.Text))
+            {
+                Funciones.Program.MostrarError("Por favor, ingrese un email válido.", "Email Inválido");
+                return;
+            }
+            if (!Funciones.Program.ValidarSoloNumeros(DocumentoG.Text, out int numero, "Documento"))
+            {
+                Funciones.Program.MostrarError("El documento ingresado no es válido.", "Documento Inválido");
+                return;
+            }
+            if (!Funciones.Program.ValidarTelefono(TelefonoG.Text))
+            {
+                Funciones.Program.MostrarError("Por favor, ingrese un número de teléfono válido.", "Teléfono Inválido");
+                return;
+            }
+            if (!Funciones.Program.VerificarFecha(FechaIngreso.SelectedDate, "Ingreso") ||
+                !Funciones.Program.VerificarFecha(FechaNacimiento.SelectedDate, "Nacimiento"))
+            {
+                return;
+            }
+            var camposTexto = new (TextBox control, int min, int max, string nombre, string valorAsignar)[]//se crea una tupla
+            {
+                (NacionalidadG, 1, 50, "Nacionalidad", auxiliares.Nacionalidad),
+                (NombreG, 1, 50, "Nombre", auxiliares.Nombre),
+                (ApellidoG, 1, 50, "Apellido", auxiliares.Apellido),
+                (Domicilio, 1, 50, "Domicilio", auxiliares.Domicilio),
+                (Localidad, 1, 50, "Localidad", auxiliares.Localidad)
+            };
+
+            foreach (var campo in camposTexto)
+            {
+                // Pasar el control completo al método ValidarLongitudTexto
+                if (!Funciones.Program.ValidarLongitudTexto(campo.control, campo.min, campo.max, campo.nombre, campo.valorAsignar))
                 {
-                    MessageBox.Show("No puede dejar ningun campo en blanco...", "ATENCION");
+                    Funciones.Program.MostrarError($"El campo {campo.nombre} es inválido.", $"{campo.nombre} Inválido");
                     return;
                 }
-                else
-                {
-                    auxiliares.Id = idAuxiliar;
-                    auxiliares.Email = EmailG.Text;
-                    auxiliares.Documento = int.Parse(DocumentoG.Text); // Asegúrate de que esto es un número válido
-                    auxiliares.Nombre = NombreG.Text;
-                    auxiliares.Apellido = ApellidoG.Text;
-                    auxiliares.Telefono = TelefonoG.Text;
-                    auxiliares.FechaIngreso = DateTime.Parse(FechaIngreso.Text); // Manejar posibles errores de formato
-                    auxiliares.FechaNacimiento = DateTime.Parse(FechaNacimiento.Text); // Manejar posibles errores de formato
-                    auxiliares.Nacionalidad = NacionalidadG.Text;
-                    auxiliares.Domicilio = Domicilio.Text;
-                    auxiliares.Localidad = Localidad.Text;
-                    auxiliares.Cargo = cmbCargos.Text;
-
-
-                    Funciones.Program.ModificarAuxiliares(auxiliares);
-                    MessageBox.Show("Paciente modificado correctamente.");
-                    //funcion de modificar
-                }
             }
+            auxiliares.Id=idAuxiliar;
+            auxiliares.Email = EmailG.Text;
+            auxiliares.Documento = int.Parse(DocumentoG.Text); 
+            auxiliares.Nombre= NombreG.Text;
+            auxiliares.Apellido= ApellidoG.Text;
+            auxiliares.Telefono= TelefonoG.Text;
+            auxiliares.FechaNacimiento = DateTime.Parse(FechaNacimiento.Text);
+            auxiliares.FechaIngreso = DateTime.Parse(FechaIngreso.Text);
+            auxiliares.Nacionalidad= NacionalidadG.Text;
+            auxiliares.Domicilio = Domicilio.Text;
+            auxiliares.Localidad = Localidad.Text;
+            auxiliares.Cargo= cmbCargos.Text;
+            
+            Funciones.Program.ModificarAuxiliares(auxiliares);
+            MessageBox.Show("Auxiliar modificado correctamente.");
+
         }
         private void FechaIngreso_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {

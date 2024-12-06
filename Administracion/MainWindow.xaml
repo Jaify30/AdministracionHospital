@@ -189,21 +189,7 @@
                             </Button>
                         </DockPanel>
 
-                        <ComboBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  FontFamily="Tahoma" FontSize="15" x:Name="cmbOrdenamiento" 
-                        Width="200"
-                        Height="40"
-                        BorderThickness="1"
-                        BorderBrush="White"
-                        Margin="2" 
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch" 
-                        SelectedIndex="0"
                         
-                        >
-                            <ComboBoxItem IsEnabled="False" Content="Ordenar por..." />
-                            <ComboBoxItem Content="Ordenar por Nombre" />
-                            <ComboBoxItem Content="Ordenar  por Apellido"/>
-                        </ComboBox>
                     </StackPanel>
                     
                     

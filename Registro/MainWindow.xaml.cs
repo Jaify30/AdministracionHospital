@@ -140,9 +140,9 @@ namespace RegistroMed
                 MessageBox.Show("El documento ingresado no es válido.", "Documento Inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (Funciones.Program.DocumentoExiste(int.Parse(Documento.Text)))//Verifica, si el empleados existe en la base de datos mediante el numero de documento.
+            if (!Funciones.Program.ValidarSoloNumeros(Documento.Text, out numero, "Documento"))
             {
-                MessageBox.Show("El empleado ingresado, ya se encuentra en la base de datos.");
+                MessageBox.Show("El documento ingresado no es válido.", "Documento Inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             empleado.Documento = numero;
@@ -151,6 +151,8 @@ namespace RegistroMed
             string patron1 = @"^\d{10}$";
             string patron2 = @"^\d{3}[-\s]?\d{3}[-\s]?\d{4}$";
             string patron3 = @"^\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$";
+
+            Telefono.Text = Telefono.Text.Replace(" ", "");
 
             if (!Regex.IsMatch(Telefono.Text, patron1) && !Regex.IsMatch(Telefono.Text, patron2) && !Regex.IsMatch(Telefono.Text, patron3))
             {

@@ -87,6 +87,8 @@ namespace RegistroAux
             string patron2 = @"^\d{3}[-\s]?\d{3}[-\s]?\d{4}$";
             string patron3 = @"^\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$";
 
+            Telefono.Text = Telefono.Text.Replace(" ", "");
+
             if (!Regex.IsMatch(Telefono.Text, patron1) && !Regex.IsMatch(Telefono.Text, patron2) && !Regex.IsMatch(Telefono.Text, patron3))
             {
                 MessageBox.Show("Por favor, ingrese un número de teléfono válido.", "Teléfono Inválido", MessageBoxButton.OK, MessageBoxImage.Warning);

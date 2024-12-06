@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
+using static Entidades.Program;
 
 namespace ModificarDoctores
 {
@@ -125,40 +128,97 @@ namespace ModificarDoctores
 
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult resultado = MessageBox.Show("¿Está seguro de que desea modificar los datos del paciente?",
-          "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            // Confirmación del usuario
+            MessageBoxResult resultado = MessageBox.Show("¿Está seguro de que desea modificar los datos del doctor?",
+                "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            if (resultado == MessageBoxResult.Yes)
+            if (resultado != MessageBoxResult.Yes) return;
+
+            // Validar campos obligatorios
+            string[] camposObligatorios = { EmailG.Text, DocumentoG.Text, NombreG.Text, ApellidoG.Text, TelefonoG.Text, FechaIngreso.Text,
+                                     NacionalidadG.Text, Domicilio.Text, Localidad.Text, cmbCargos.Text, MatriculaG.Text, FechaNacimiento.Text };
+
+            if (Funciones.Program.CamposVacios(camposObligatorios))
             {
-                if (string.IsNullOrWhiteSpace(EmailG.Text) || string.IsNullOrWhiteSpace(DocumentoG.Text) || string.IsNullOrWhiteSpace(NombreG.Text) || string.IsNullOrWhiteSpace(ApellidoG.Text) 
-                    || string.IsNullOrWhiteSpace(TelefonoG.Text) || string.IsNullOrWhiteSpace(FechaIngreso.Text) || string.IsNullOrWhiteSpace(NacionalidadG.Text) || string.IsNullOrWhiteSpace(Domicilio.Text)
-                    || string.IsNullOrWhiteSpace(Localidad.Text) || string.IsNullOrWhiteSpace(cmbCargos.Text) || string.IsNullOrWhiteSpace(MatriculaG.Text) || string.IsNullOrWhiteSpace(FechaNacimiento.Text))
+                MessageBox.Show("No puede dejar ningún campo en blanco...", "ATENCIÓN");
+                return;
+            }
+
+            // Validar email
+            if (!Funciones.Program.ValidarEmail(EmailG.Text))
+            {
+                Funciones.Program.MostrarError("Por favor, ingrese un email válido.", "Email Inválido");
+                return;
+            }
+
+            // Validar documento
+            if (!Funciones.Program.ValidarSoloNumeros(DocumentoG.Text, out int numero, "Documento"))
+            {
+                Funciones.Program.MostrarError("El documento ingresado no es válido.", "Documento Inválido");
+                return;
+            }
+
+            // Validar teléfono
+            if (!Funciones.Program.ValidarTelefono(TelefonoG.Text))
+            {
+                Funciones.Program.MostrarError("Por favor, ingrese un número de teléfono válido.", "Teléfono Inválido");
+                return;
+            }
+
+            // Validar fechas
+            if (!Funciones.Program.VerificarFecha(FechaIngreso.SelectedDate, "Ingreso") ||
+                !Funciones.Program.VerificarFecha(FechaNacimiento.SelectedDate, "Nacimiento"))
+            {
+                return;
+            }
+
+            // Validar longitudes de texto
+            var camposTexto = new (TextBox control, int min, int max, string nombre, string valorAsignar)[]//se crea una tupla
+            {
+                (NacionalidadG, 1, 50, "Nacionalidad", Doctores.Nacionalidad),
+                (NombreG, 1, 50, "Nombre", Doctores.Nombre),
+                (ApellidoG, 1, 50, "Apellido", Doctores.Apellido),
+                (Domicilio, 1, 50, "Domicilio", Doctores.Domicilio),
+                (Localidad, 1, 50, "Localidad", Doctores.Localidad)
+            };
+
+            foreach (var campo in camposTexto)
+            {
+                // Pasar el control completo al método ValidarLongitudTexto
+                if (!Funciones.Program.ValidarLongitudTexto(campo.control, campo.min, campo.max, campo.nombre, campo.valorAsignar))
                 {
-                    MessageBox.Show("No puede dejar ningun campo en blanco...", "ATENCION");
+                    Funciones.Program.MostrarError($"El campo {campo.nombre} es inválido.", $"{campo.nombre} Inválido");
                     return;
                 }
-                else
-                {
-                    Doctores.Id = idDoctor;
-                    Doctores.Email = EmailG.Text;
-                    Doctores.Documento = int.Parse(DocumentoG.Text); // Asegúrate de que esto es un número válido
-                    Doctores.Nombre = NombreG.Text;
-                    Doctores.Apellido = ApellidoG.Text;
-                    Doctores.Telefono = TelefonoG.Text;
-                    Doctores.FechaIngreso = DateTime.Parse(FechaIngreso.Text); // Manejar posibles errores de formato
-                    Doctores.FechaNacimiento = DateTime.Parse(FechaNacimiento.Text); // Manejar posibles errores de formato
-                    Doctores.Nacionalidad = NacionalidadG.Text;
-                    Doctores.Domicilio = Domicilio.Text;
-                    Doctores.Localidad = Localidad.Text;
-                    Doctores.Cargo = cmbCargos.Text;
-                    Doctores.Matricula = MatriculaG.Text;
-
-                    Funciones.Program.ModificarDoctores(Doctores);
-                    MessageBox.Show("Paciente modificado correctamente.");
-                    //funcion de modificar
-                }
             }
+
+            // Validar matrícula
+            if (!Funciones.Program.ValidarLongitudTexto(MatriculaG, 1, 20, "Matrícula", Doctores.Matricula))
+            {
+                Funciones.Program.MostrarError("La matrícula es inválida.", "Matrícula Inválida");
+                return;
+            }
+
+            // Asignar valores al objeto
+            Doctores.Id = idDoctor;
+            Doctores.Email = EmailG.Text;
+            Doctores.Documento = int.Parse(DocumentoG.Text);
+            Doctores.Nombre = NombreG.Text;
+            Doctores.Apellido = ApellidoG.Text;
+            Doctores.Telefono = TelefonoG.Text;
+            Doctores.FechaIngreso = DateTime.Parse(FechaIngreso.Text);
+            Doctores.FechaNacimiento = DateTime.Parse(FechaNacimiento.Text);
+            Doctores.Nacionalidad = NacionalidadG.Text;
+            Doctores.Domicilio = Domicilio.Text;
+            Doctores.Localidad = Localidad.Text;
+            Doctores.Cargo = cmbCargos.Text;
+            Doctores.Matricula = MatriculaG.Text;
+
+            // Llamar a la función de modificación
+            Funciones.Program.ModificarDoctores(Doctores);
+            MessageBox.Show("Doctor modificado correctamente.");
         }
+
 
         private void FechaIngreso_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
