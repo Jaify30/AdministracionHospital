@@ -26,8 +26,8 @@ namespace Funciones
         //Conexion SQL
         public static SqlConnection conexionBBDD()
         {
-            SqlConnection conexion = new SqlConnection("Server=JAIFY\\SQLEXPRESS; Database=Hospital;" +
-                " Trusted_Connection=true; Integrated Security=SSPI;Persist Security Info=False;");
+            SqlConnection conexion = new SqlConnection(@"Server=(localdb)\MSSQLLocalDB; Database=Hospital; Trusted_Connection=True; Integrated Security=True;");
+
             conexion.Open();
 
             return conexion;
